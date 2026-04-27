@@ -174,3 +174,22 @@ export const grades = pgTable("grades", {
   graderTokensOut: integer("grader_tokens_out"),
   createdAt: timestamp("created_at").defaultNow().notNull()
 });
+
+// Stripe webhook idempotency / audit log.
+// Every event Stripe POSTs to /api/webhooks/stripe is inserted here first.
+// The unique index on stripe_event_id is what makes the handler idempotent.
+export const stripeEvents = pgTable(
+  "stripe_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    stripeEventId: text("stripe_event_id").notNull(),
+    type: text("type").notNull(),
+    payload: jsonb("payload").notNull(),
+    receivedAt: timestamp("received_at").defaultNow().notNull(),
+    processedAt: timestamp("processed_at"),
+    processingError: text("processing_error")
+  },
+  (t) => ({
+    eventIdIdx: uniqueIndex("stripe_events_event_id_idx").on(t.stripeEventId)
+  })
+);
