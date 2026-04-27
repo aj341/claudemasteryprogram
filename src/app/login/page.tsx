@@ -1,61 +1,84 @@
-import { signIn } from "@/lib/auth";
 import Link from "next/link";
+import { signIn, auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function LoginPage({ searchParams }: { searchParams?: Promise<{ error?: string; from?: string }> }) {
+export const metadata = {
+  title: "Sign in — Claude Mastery",
+  description: "Sign in to continue your Claude Mastery course."
+};
+
+export default async function LoginPage({
+  searchParams
+}: {
+  searchParams?: Promise<{ error?: string; sent?: string }>;
+}) {
+  const session = await auth();
+  if (session?.user) redirect("/dashboard");
+  const sp = (await searchParams) ?? {};
+
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[var(--bg-alt)] p-6">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block">
-            <span className="text-[20px] font-bold tracking-tight text-[var(--dark)]">Claude Mastery</span>
-          </Link>
-          <p className="text-sm text-[var(--text-muted)] mt-1">by Commercial Growth</p>
+    <main className="auth-shell">
+      <div className="auth-card">
+        <div className="auth-brand">
+          <div className="auth-brand-mark">CM</div>
+          <div className="auth-brand-text">Claude Mastery</div>
         </div>
 
-        <div className="card">
-          <h1 className="text-2xl font-bold mb-2">Sign in</h1>
-          <p className="text-sm text-[var(--text-body)] mb-6">
-            Enter the email you used to enrol. We&apos;ll send you a magic link to sign in — no password needed.
-          </p>
-
-          <form
-            action={async (formData) => {
-              "use server";
-              await signIn("resend", { email: formData.get("email"), redirectTo: "/dashboard" });
-            }}
-            className="space-y-4"
-          >
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-[var(--text-body)] mb-2">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                className="input"
-                autoComplete="email"
-              />
-            </div>
-
-            <button type="submit" className="btn-primary w-full">
-              Send magic link
-            </button>
-          </form>
-
-          <p className="text-xs text-[var(--text-muted)] mt-6 text-center">
-            By continuing you agree to the Commercial Growth{" "}
-            <a href="https://commercialgrowth.com.au/terms" className="underline">Terms</a> and{" "}
-            <a href="https://commercialgrowth.com.au/privacy" className="underline">Privacy Policy</a>.
-          </p>
-        </div>
-
-        <p className="text-center text-xs text-[var(--text-muted)] mt-6">
-          Need help? Email{" "}
-          <a href="mailto:hello@commercialgrowth.com.au" className="underline">hello@commercialgrowth.com.au</a>
+        <h1 className="auth-heading">Welcome back</h1>
+        <p className="auth-subhead">
+          Sign in to continue your Claude Mastery course. We&apos;ll email you a one-time
+          link — no password needed.
         </p>
+
+        {sp.error && (
+          <div className="auth-error">
+            We couldn&apos;t send your sign-in link. Please check the email and try again.
+          </div>
+        )}
+
+        <form
+          action={async (formData) => {
+            "use server";
+            const email = String(formData.get("email") ?? "").trim().toLowerCase();
+            await signIn("resend", { email, redirectTo: "/dashboard" });
+          }}
+        >
+          <div className="form-field">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="form-input"
+              placeholder="you@yourbusiness.com"
+              autoComplete="email"
+              required
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary btn-full">
+            Send my sign-in link
+          </button>
+        </form>
+
+        <div className="divider">No password needed</div>
+
+        <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", textAlign: "center", lineHeight: 1.6 }}>
+          Click the link in the email to sign in. The link expires in 24 hours and can only be used once.
+        </p>
+
+        <p className="auth-alt">
+          Don&apos;t have an account?{" "}
+          <a href="https://commercialgrowth.com.au/claudemastery">Start your course</a>
+        </p>
+      </div>
+
+      <div className="auth-footer">
+        <a href="mailto:hello@commercialgrowth.com.au">hello@commercialgrowth.com.au</a>
+        <span className="sep" />
+        <a href="https://commercialgrowth.com.au/terms">Terms</a>
+        <span className="sep" />
+        <a href="https://commercialgrowth.com.au/privacy">Privacy</a>
       </div>
     </main>
   );
