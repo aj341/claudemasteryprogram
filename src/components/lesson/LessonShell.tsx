@@ -77,6 +77,10 @@ export default function LessonShell({
   const [openModule, setOpenModule] = useState("01");
   const [pageIdx, setPageIdx] = useState(0);
   const [pageDir, setPageDir] = useState<"next" | "prev">("next");
+  // Touch swipe state — refs so we don't re-render on every move
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const touchActive = useRef(false);
   const totalPages = lessonPages.length;
   const currentPage = lessonPages[pageIdx];
   function goToPage(idx: number) {
@@ -89,6 +93,27 @@ export default function LessonShell({
       const top = frame.getBoundingClientRect().top + window.scrollY - 80;
       if (window.scrollY > top + 100) window.scrollTo({ top, behavior: "smooth" });
     }
+  }
+
+  // Mobile swipe handlers
+  const SWIPE_THRESHOLD = 50; // px horizontal travel needed to register a page turn
+  const SWIPE_RESTRAINT = 80; // max vertical drift before we treat the gesture as scrolling, not swiping
+  function onTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    const t = e.changedTouches[0];
+    touchStartX.current = t.clientX;
+    touchStartY.current = t.clientY;
+    touchActive.current = true;
+  }
+  function onTouchEnd(e: React.TouchEvent<HTMLDivElement>) {
+    if (!touchActive.current || touchStartX.current === null || touchStartY.current === null) return;
+    touchActive.current = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX.current;
+    const dy = t.clientY - touchStartY.current;
+    if (Math.abs(dy) > SWIPE_RESTRAINT) return; // user was scrolling, not swiping
+    if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+    if (dx < 0) goToPage(pageIdx + 1); // swiped left -> next page
+    else goToPage(pageIdx - 1); // swiped right -> previous page
   }
   const submissionRef = useRef<HTMLTextAreaElement>(null);
   const gradeRef = useRef<HTMLDivElement>(null);
@@ -268,7 +293,7 @@ export default function LessonShell({
               <div className="ebook-page-status">Page {pageIdx + 1} of {totalPages}</div>
             </div>
 
-            <div className="ebook-book">
+            <div className="ebook-book" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
               <div className="ebook-stage">
                 <article key={pageIdx} className={`ebook-page${pageDir === "prev" ? " is-prev" : ""}`}>
                   <div className="ebook-page-head">
