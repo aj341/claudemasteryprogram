@@ -100,9 +100,30 @@ export const profiles = pgTable("profiles", {
   productsServices: text("products_services"),
   customerSnapshot: text("customer_snapshot"),
   onboardingComplete: boolean("onboarding_complete").default(false).notNull(),
+  // W1-T03c: bumped any time a personalisation-relevant field changes.
+  // Downstream variant caches read this to know when to invalidate.
+  profileVersion: integer("profile_version").default(1).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull()
 });
+
+// W1-T03c: per-attempt log of automatic profile field extraction from lesson
+// submissions. One row per (lesson, field) attempt — success or failure.
+export const profileExtractionLog = pgTable(
+  "profile_extraction_log",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    lessonSlug: text("lesson_slug").notNull(),
+    field: text("field").notNull(),
+    success: boolean("success").notNull(),
+    extractedValue: text("extracted_value"),
+    errorClass: text("error_class"),
+    ts: timestamp("ts").defaultNow().notNull()
+  }
+);
 
 // Enrolments — one per user per cohort/tier
 export const enrolments = pgTable(

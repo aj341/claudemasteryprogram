@@ -6,6 +6,8 @@ import { lessonSubmissions, grades, profiles } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getLessonBySlug } from "@/lib/lessons";
+import { extractProfileFieldsForLesson, lessonExtractsFields } from "@/services/profile-extraction";
+import { after } from "next/server";
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const GRADER_MODEL = "claude-sonnet-4-5";
@@ -227,6 +229,20 @@ export async function submitAndGradeLesson(lessonSlug: string, formData: FormDat
     feedback: parsed.feedback,
     graderModel: GRADER_MODEL
   });
+
+  // W1-T03c: fire-and-forget profile field extraction. Only runs for lessons
+  // 1.1-1.4 (gated inside lessonExtractsFields). Wrapped in after() so it
+  // executes after the response is sent — submission flow latency unchanged.
+  // Errors are caught here so they never crash the grading flow.
+  if (lessonExtractsFields(lessonSlug)) {
+    after(async () => {
+      try {
+        await extractProfileFieldsForLesson(lessonSlug, submissionText, userId);
+      } catch (err) {
+        console.error("[profile-extraction] background failure:", err);
+      }
+    });
+  }
 
   revalidatePath("/dashboard");
   revalidatePath(`/lessons/${lessonSlug}`);

@@ -516,7 +516,7 @@ export default function LessonShell({
                     <span className="q-field-num">3</span>
                     <div>
                       <div className="q-field-title">Your first precise prompt</div>
-                      <div className="q-field-hint">Pick one task from above. Write the opening line you&apos;d give Claude — who you are, your context, what you want, what &quot;good&quot; looks like. <strong>{Q3_MIN}–{Q3_MAX} words.</strong></div>
+                      <div className="q-field-hint">Pick one task from above. Write the opening line you&apos;d give Claude — start by naming the business you run (or work in) and your role in it, then the task, the context, and what &quot;good&quot; looks like. <strong>{Q3_MIN}–{Q3_MAX} words.</strong></div>
                     </div>
                   </div>
                   <textarea
@@ -525,7 +525,7 @@ export default function LessonShell({
                     rows={6}
                     value={q3}
                     onChange={e => setQ3(e.target.value)}
-                    placeholder="I&#39;m a [role] at [business]. We [context]. I need to [task]. The audience is [who]. Good looks like: [criteria]…"
+                    placeholder="I run [business name], a [what your business does] in [location]. As [role], I need to [task]. The audience is [who]. Good looks like: [criteria]…"
                     disabled={pending}
                   />
                   <div className="q-field-foot">
