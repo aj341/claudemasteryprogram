@@ -9,7 +9,9 @@
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "prebuild": "tsx src/scripts/generate-lesson-index.ts",
+    "gen:lesson-index": "tsx src/scripts/generate-lesson-index.ts"
   },
   "dependencies": {
     "next": "^15.1.0",
@@ -23,7 +25,11 @@
     "stripe": "^17.4.0",
     "posthog-js": "^1.194.0",
     "zod": "^3.23.8",
-    "server-only": "^0.0.1"
+    "server-only": "^0.0.1",
+    "gray-matter": "^4.0.3",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
+    "rehype-raw": "^7.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

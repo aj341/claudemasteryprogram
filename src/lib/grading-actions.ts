@@ -5,9 +5,10 @@ import { db } from "@/db";
 import { lessonSubmissions, grades, profiles } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { getLessonBySlug } from "@/lib/lessons";
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const GRADER_MODEL = "claude-sonnet-4-5"; // we'll use the latest sonnet for grading; works in Apr 2026
+const GRADER_MODEL = "claude-sonnet-4-5";
 
 export type GradeResult = {
   ok: boolean;
@@ -17,43 +18,48 @@ export type GradeResult = {
   error?: string;
 };
 
-const RUBRIC_1_1 = [
-  { name: "Lesson grasp", points: 25, desc: "Section 1 shows you understood why Claude is good or not good at the things you picked — not just listing them. Reasoning ties back to how Claude works or how it's trained." },
-  { name: "Specificity", points: 25, desc: "Section 2 names specific tasks, not categories. \"Summarise the monthly client report I send first of each month\" beats \"help with documents.\"" },
-  { name: "Real context", points: 25, desc: "Section 2 is grounded in your actual business and role. Each task reads like it could only have come from someone doing your job — not a generic scenario." },
-  { name: "Prompt craft", points: 25, desc: "Section 3 actually demonstrates the precision principle: identifies who you are, the context, what you want, and what \"good\" looks like. Specific enough that Claude could produce something useful on the first try." }
-];
+function moduleSlugForLessonSlug(slug: string): string {
+  const numMatch = slug.match(/^(\d+)\./);
+  const num = numMatch?.[1] ?? "01";
+  const lookup: Record<string, string> = {
+    "1": "01-claude-essentials",
+    "2": "02-prompt-engineering-fundamentals",
+    "3": "03-practical-daily-applications",
+    "4": "04-claude-projects-knowledge",
+    "5": "05-extended-capabilities",
+    "6": "06-core-capstone"
+  };
+  return lookup[num] ?? "01-claude-essentials";
+}
 
-function buildGradingPrompt(submission: string, learnerIndustry: string | null) {
-  return `You are grading a student's submission for Lesson 1.1 of the Claude Mastery Program — "What is Claude AI?".
+function buildGradingPrompt(lessonSlug: string, lessonTitle: string, lessonNumber: string, deliverableTitle: string, sectionsSummary: string, rubric: { name: string; points: number; desc: string }[], submission: string, learnerIndustry: string | null) {
+  const passMark = 70;
+  const totalPoints = rubric.reduce((sum, r) => sum + r.points, 0) || 100;
+
+  return `You are grading a student's submission for Lesson ${lessonNumber} of the Claude Mastery Program — "${lessonTitle}".
 
 The student is enrolled in a 6-week course teaching Australian SMB owners and operators to use Claude effectively in their business. ${learnerIndustry ? `The student works in: ${learnerIndustry}.` : ""}
 
-The deliverable they were asked to submit has three sections:
-1. How Claude actually works — pick one thing Claude is good at and one it's not, explain why each is on that list (ties back to how Claude works or how it was trained). 80–120 words.
-2. Three tasks in their work where Claude could earn its keep — each task names: (a) the specific task, (b) where it sits in their week, (c) which Claude strength makes it suited. If a task touches one of Claude's limits, they should name how they'd manage that. 50–70 words each.
-3. Their first precise prompt — for one of the three tasks, the opening line they'd give Claude: who they are, their context, what they want, what "good" looks like. 60–100 words.
+The deliverable they were asked to submit ("${deliverableTitle}") has the following sections:
+${sectionsSummary}
 
-Grade against this 4-criteria rubric (25 points each, 100 total). Pass mark is 70.
+Grade against this ${rubric.length}-criteria rubric (${totalPoints} points total). Pass mark is ${passMark}.
 
-${RUBRIC_1_1.map(r => `**${r.name}** (25 pts): ${r.desc}`).join("\n")}
+${rubric.map(r => `**${r.name}** (${r.points} pts): ${r.desc}`).join("\n")}
 
 Return ONLY a valid JSON object with this exact structure (no markdown, no commentary, no code fences — just the JSON):
 
 {
-  "score_overall": <integer 0-100>,
+  "score_overall": <integer 0-${totalPoints}>,
   "feedback": "<2-3 sentence summary of what they did well and what to improve, addressed to the student in plain English>",
   "rubric": [
-    { "label": "Lesson grasp", "score": <0-25 integer> },
-    { "label": "Specificity", "score": <0-25 integer> },
-    { "label": "Real context", "score": <0-25 integer> },
-    { "label": "Prompt craft", "score": <0-25 integer> }
+${rubric.map(r => `    { "label": "${r.name}", "score": <0-${r.points} integer> }`).join(",\n")}
   ]
 }
 
-The four rubric scores must sum to score_overall.
+The rubric scores must sum to score_overall.
 
-Be a generous-but-honest grader. If a section is missing entirely, dock heavily. If section 1 just lists "Claude is good at writing" without explaining WHY (token-by-token generation, training on text, no live data, etc.), dock lesson grasp. If section 2 names abstract categories ("help with marketing") rather than named tasks ("draft the monthly newsletter to my 480 retail customers"), dock specificity. If section 3's prompt is generic ("write me an email") rather than precise (identifies them, their business, the audience, what good looks like), dock prompt craft. Reward concrete, business-grounded answers that show real understanding.
+Be a generous-but-honest grader. If a section is missing entirely, dock heavily. Reward concrete, business-grounded answers that show real understanding. Penalise generic, abstract, or hypothetical answers — the goal is for the student to apply this lesson to their actual work.
 
 ---STUDENT SUBMISSION BEGINS---
 ${submission}
@@ -62,43 +68,57 @@ ${submission}
 Now return only the JSON.`;
 }
 
-export async function submitAndGradeLesson1_1(formData: FormData): Promise<GradeResult> {
+export async function submitAndGradeLesson(lessonSlug: string, formData: FormData): Promise<GradeResult> {
   const session = await auth();
   if (!session?.user?.id) return { ok: false, error: "Not signed in" };
   if (!ANTHROPIC_API_KEY) return { ok: false, error: "Grader is not configured" };
 
-  // Read the three section answers; fall back to a legacy single "submission" field if present.
-  const q1 = String(formData.get("q1") ?? "").trim();
-  const q2 = String(formData.get("q2") ?? "").trim();
-  const q3 = String(formData.get("q3") ?? "").trim();
+  const lesson = getLessonBySlug(lessonSlug);
+  if (!lesson || !lesson.deliverable) {
+    return { ok: false, error: "This lesson doesn't have a graded deliverable." };
+  }
+
+  const sections = lesson.deliverable.sections;
+
+  // Read each q{n} field
+  const responses: Record<string, string> = {};
+  const wordCounts: Record<string, number> = {};
+  const wc = (s: string) => (s.trim() === "" ? 0 : s.trim().split(/\s+/).length);
+
+  for (const sec of sections) {
+    const value = String(formData.get(`q${sec.num}`) ?? "").trim();
+    responses[`q${sec.num}`] = value;
+    wordCounts[`q${sec.num}`] = wc(value);
+    if (sec.minWords !== null && wordCounts[`q${sec.num}`] < sec.minWords) {
+      return { ok: false, error: `Section ${sec.num} (${sec.title}) is below the ${sec.minWords}-word minimum.` };
+    }
+    if (value === "") {
+      return { ok: false, error: `Section ${sec.num} (${sec.title}) is empty.` };
+    }
+  }
+
+  // Legacy single-field fallback for older lessons that may not be wired with q{n} yet
   const legacy = String(formData.get("submission") ?? "").trim();
-
-  const wc = (s: string) => (s === "" ? 0 : s.split(/\s+/).length);
-  const w1 = wc(q1), w2 = wc(q2), w3 = wc(q3);
   let submissionText: string;
-  let responses: Record<string, string>;
+  let storedResponses: Record<string, string>;
 
-  if (q1 && q2 && q3) {
-    if (w1 < 80) return { ok: false, error: "Section 1 is below the 80-word minimum." };
-    if (w2 < 150) return { ok: false, error: "Section 2 is below the 150-word minimum (3 tasks × 50 words)." };
-    if (w3 < 60) return { ok: false, error: "Section 3 is below the 60-word minimum." };
-    submissionText = `1. How Claude actually works\n${q1}\n\n2. Three tasks in your work where Claude could earn its keep\n${q2}\n\n3. Your first precise prompt\n${q3}`;
-    responses = { q1, q2, q3 };
-  } else if (legacy.length >= 200) {
+  if (sections.length > 0 && Object.values(responses).every(v => v.length > 0)) {
+    submissionText = sections
+      .map(s => `${s.num}. ${s.title}\n${responses[`q${s.num}`]}`)
+      .join("\n\n");
+    storedResponses = responses;
+  } else if (legacy.length >= 100) {
     submissionText = legacy;
-    responses = { full: legacy };
+    storedResponses = { full: legacy };
   } else {
-    return { ok: false, error: "Please answer all three questions and meet the word count for each." };
+    return { ok: false, error: "Please answer all questions and meet the word count for each." };
   }
 
   const userId = session.user.id;
-  const lessonSlug = "1.1-what-claude-is-and-what-it-isnt";
-  const moduleSlug = "01-claude-essentials";
+  const moduleSlug = moduleSlugForLessonSlug(lessonSlug);
 
-  // Fetch profile for context
   const [profile] = await db.select().from(profiles).where(eq(profiles.userId, userId));
 
-  // Upsert submission row
   const existing = await db
     .select()
     .from(lessonSubmissions)
@@ -109,7 +129,7 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
     await db
       .update(lessonSubmissions)
       .set({
-        responses,
+        responses: storedResponses,
         promptUsed: submissionText,
         status: "submitted",
         submittedAt: new Date(),
@@ -124,7 +144,7 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
         userId,
         lessonSlug,
         moduleSlug,
-        responses,
+        responses: storedResponses,
         promptUsed: submissionText,
         status: "submitted",
         submittedAt: new Date()
@@ -133,7 +153,14 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
     submissionId = row.id;
   }
 
-  // Call Claude API
+  // Build prompt
+  const sectionsSummary = sections
+    .map(s => {
+      const wc = s.minWords !== null && s.maxWords !== null ? ` (${s.minWords}–${s.maxWords} words)` : "";
+      return `${s.num}. ${s.title}${wc} — ${s.desc}`;
+    })
+    .join("\n");
+
   let parsed: { score_overall: number; feedback: string; rubric: { label: string; score: number }[] };
   try {
     const resp = await fetch("https://api.anthropic.com/v1/messages", {
@@ -145,11 +172,20 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
       },
       body: JSON.stringify({
         model: GRADER_MODEL,
-        max_tokens: 1024,
+        max_tokens: 1500,
         messages: [
           {
             role: "user",
-            content: buildGradingPrompt(submissionText, profile?.industry ?? null)
+            content: buildGradingPrompt(
+              lessonSlug,
+              lesson.title,
+              lesson.number,
+              lesson.deliverable.title,
+              sectionsSummary,
+              lesson.deliverable.rubric,
+              submissionText,
+              profile?.industry ?? null
+            )
           }
         ]
       })
@@ -163,10 +199,7 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
 
     const data = await resp.json();
     let text = data.content?.[0]?.text ?? "";
-
-    // Strip markdown fences if any
     text = text.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "").trim();
-    // Find first { ... } block
     const m = text.match(/\{[\s\S]+\}/);
     if (!m) throw new Error("No JSON in grader response");
     parsed = JSON.parse(m[0]);
@@ -175,20 +208,17 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
     return { ok: false, error: "Couldn't parse grader response. Try again." };
   }
 
-  // Persist grade
   const breakdown: Record<string, number> = {};
   for (const r of parsed.rubric) {
     const key = r.label.toLowerCase().replace(/[^a-z0-9]+/g, "_");
     breakdown[key] = r.score;
   }
 
-  // Mark submission as graded
   await db
     .update(lessonSubmissions)
     .set({ status: "graded", updatedAt: new Date() })
     .where(eq(lessonSubmissions.id, submissionId));
 
-  // Insert grade row
   await db.insert(grades).values({
     submissionId,
     userId,
@@ -201,16 +231,24 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
   revalidatePath("/dashboard");
   revalidatePath(`/lessons/${lessonSlug}`);
 
-  // Return grade result for inline reveal
   return {
     ok: true,
     scoreOverall: parsed.score_overall,
     feedback: parsed.feedback,
-    rubric: parsed.rubric.map(r => ({
-      label: r.label,
-      score: r.score,
-      max: 25,
-      tone: r.score / 25 < 0.6 ? "danger" as const : r.score / 25 < 0.75 ? "warn" as const : undefined
-    }))
+    rubric: parsed.rubric.map(r => {
+      const sec = lesson.deliverable!.rubric.find(rr => rr.name === r.label);
+      const max = sec?.points ?? 25;
+      return {
+        label: r.label,
+        score: r.score,
+        max,
+        tone: r.score / max < 0.6 ? "danger" as const : r.score / max < 0.75 ? "warn" as const : undefined
+      };
+    })
   };
+}
+
+// Backward-compat alias used by the existing LessonShell for lesson 1.1.
+export async function submitAndGradeLesson1_1(formData: FormData): Promise<GradeResult> {
+  return submitAndGradeLesson("1.1-what-claude-is-and-what-it-isnt", formData);
 }
