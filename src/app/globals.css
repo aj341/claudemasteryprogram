@@ -564,3 +564,67 @@ a:hover { text-decoration: underline; }
 .ebook-callout .callout-block:last-child { margin-bottom: 0; }
 .ebook-callout .callout-block-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 4px; }
 .ebook-callout .callout-block-text { font-size: 0.92rem; color: var(--text-body); line-height: 1.55; }
+
+/* Bottom-anchored ebook controls — primary nav after finishing a page */
+.ebook-controls-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  position: relative;
+  z-index: 1;
+}
+.ebook-controls-bottom .ebook-nav-btn {
+  width: auto;
+  height: 44px;
+  padding: 0 18px;
+  gap: 8px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+}
+.ebook-controls-bottom .ebook-nav-btn:hover:not(:disabled) {
+  background: var(--bg-alt);
+  border-color: var(--text-dim);
+  transform: translateY(-1px);
+}
+.ebook-controls-bottom .ebook-nav-btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: white;
+}
+.ebook-controls-bottom .ebook-nav-btn-primary:hover:not(:disabled) {
+  background: var(--blue-dark);
+  border-color: var(--blue-dark);
+}
+.ebook-controls-bottom .ebook-page-status {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+@media (max-width: 600px) {
+  .ebook-controls-bottom { padding: 12px; gap: 8px; }
+  .ebook-controls-bottom .ebook-nav-btn { padding: 0 12px; height: 40px; font-size: 0.82rem; }
+  .ebook-controls-bottom .ebook-page-status { display: none; }
+}
+
+/* Top toolbar's page-status pill — slightly different style now that buttons aren't there */
+.ebook-toolbar > .ebook-page-status {
+  padding: 6px 14px;
+  background: color-mix(in srgb, var(--paper) 85%, var(--surface));
+  border: 1px solid var(--paper-rule);
+  border-radius: 100px;
+  font-feature-settings: "tnum";
+}

@@ -263,17 +263,9 @@ export default function LessonShell({
             <div className="ebook-toolbar">
               <div className="ebook-toolbar-copy">
                 <span className="ebook-toolbar-label">Turn the page</span>
-                <p className="ebook-toolbar-sub">Read this lesson in a paged book view. Use the arrows below.</p>
+                <p className="ebook-toolbar-sub">Read this lesson in a paged book view. Navigation controls are below the page.</p>
               </div>
-              <div className="ebook-controls">
-                <button type="button" className="ebook-nav-btn" onClick={() => goToPage(pageIdx - 1)} disabled={pageIdx === 0} aria-label="Previous page">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-                </button>
-                <div className="ebook-page-status">Page {pageIdx + 1} of {totalPages}</div>
-                <button type="button" className="ebook-nav-btn" onClick={() => goToPage(pageIdx + 1)} disabled={pageIdx === totalPages - 1} aria-label="Next page">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
-                </button>
-              </div>
+              <div className="ebook-page-status">Page {pageIdx + 1} of {totalPages}</div>
             </div>
 
             <div className="ebook-book">
@@ -290,6 +282,19 @@ export default function LessonShell({
                   </div>
                 </article>
               </div>
+            </div>
+
+            {/* Page navigation — placed BELOW the page so it's where the eye lands when finished reading */}
+            <div className="ebook-controls-bottom">
+              <button type="button" className="ebook-nav-btn" onClick={() => goToPage(pageIdx - 1)} disabled={pageIdx === 0} aria-label="Previous page">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+                <span>Previous</span>
+              </button>
+              <div className="ebook-page-status">Page {pageIdx + 1} of {totalPages}</div>
+              <button type="button" className="ebook-nav-btn ebook-nav-btn-primary" onClick={() => goToPage(pageIdx + 1)} disabled={pageIdx === totalPages - 1} aria-label="Next page">
+                <span>{pageIdx === totalPages - 1 ? "Finished" : "Next"}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+              </button>
             </div>
 
             <div className="ebook-progress" aria-label="Page navigation">
