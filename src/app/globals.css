@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --blue: #3BB9F5;
+  --blue-dark: #1A9EDE;
+  --blue-pale: #EBF7FF;
+  --dark: #0F1623;
+  --dark-2: #1A2235;
+  --bg: #FFFFFF;
+  --bg-alt: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-2: #F8FAFC;
+  --border: #E5E7EB;
+  --border-strong: #D1D5DB;
+  --text: #111827;
+  --text-body: #374151;
+  --text-muted: #6B7280;
+  --text-dim: #9CA3AF;
+  --success: #4ADE80;
+  --warn: #F4B261;
+  --danger: #F87171;
+  --shadow-default: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(59, 185, 245, 0.15);
+  --shadow-glow: 0 2px 8px rgba(59, 185, 245, 0.4);
+  --font: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--blue-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: var(--blue);
+  color: var(--dark);
+  font-weight: 600;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-family: inherit;
+  font-size: 15px;
+  box-shadow: var(--shadow-glow);
+}
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  border: 1px solid var(--border-strong);
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+}
+.btn-secondary:hover { background: var(--bg-alt); }
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--text);
+  transition: all 200ms ease;
+}
+.input:focus { outline: none; border-color: var(--blue); box-shadow: var(--shadow-focus); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow-default);
+}
