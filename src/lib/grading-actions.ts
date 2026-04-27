@@ -67,8 +67,29 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
   if (!session?.user?.id) return { ok: false, error: "Not signed in" };
   if (!ANTHROPIC_API_KEY) return { ok: false, error: "Grader is not configured" };
 
-  const submissionText = String(formData.get("submission") ?? "").trim();
-  if (submissionText.length < 200) return { ok: false, error: "Submission is too short — needs at least 200 characters." };
+  // Read the three section answers; fall back to a legacy single "submission" field if present.
+  const q1 = String(formData.get("q1") ?? "").trim();
+  const q2 = String(formData.get("q2") ?? "").trim();
+  const q3 = String(formData.get("q3") ?? "").trim();
+  const legacy = String(formData.get("submission") ?? "").trim();
+
+  const wc = (s: string) => (s === "" ? 0 : s.split(/\s+/).length);
+  const w1 = wc(q1), w2 = wc(q2), w3 = wc(q3);
+  let submissionText: string;
+  let responses: Record<string, string>;
+
+  if (q1 && q2 && q3) {
+    if (w1 < 80) return { ok: false, error: "Section 1 is below the 80-word minimum." };
+    if (w2 < 150) return { ok: false, error: "Section 2 is below the 150-word minimum (3 tasks × 50 words)." };
+    if (w3 < 60) return { ok: false, error: "Section 3 is below the 60-word minimum." };
+    submissionText = `1. How Claude actually works\n${q1}\n\n2. Three tasks in your work where Claude could earn its keep\n${q2}\n\n3. Your first precise prompt\n${q3}`;
+    responses = { q1, q2, q3 };
+  } else if (legacy.length >= 200) {
+    submissionText = legacy;
+    responses = { full: legacy };
+  } else {
+    return { ok: false, error: "Please answer all three questions and meet the word count for each." };
+  }
 
   const userId = session.user.id;
   const lessonSlug = "1.1-what-claude-is-and-what-it-isnt";
@@ -88,7 +109,7 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
     await db
       .update(lessonSubmissions)
       .set({
-        responses: { full: submissionText },
+        responses,
         promptUsed: submissionText,
         status: "submitted",
         submittedAt: new Date(),
@@ -103,7 +124,7 @@ export async function submitAndGradeLesson1_1(formData: FormData): Promise<Grade
         userId,
         lessonSlug,
         moduleSlug,
-        responses: { full: submissionText },
+        responses,
         promptUsed: submissionText,
         status: "submitted",
         submittedAt: new Date()

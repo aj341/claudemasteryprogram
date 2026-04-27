@@ -71,7 +71,7 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
         email: session.user.email!,
         industry: profile?.industry ?? null
       }}
-      priorSubmission={existingSubmission?.responses ? (existingSubmission.responses as { full?: string }).full ?? null : null}
+      priorSubmission={existingSubmission?.responses ? (existingSubmission.responses as Record<string, string>) : null}
       priorGrade={priorGrade}
     />
   );

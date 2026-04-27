@@ -53,7 +53,6 @@ const EXAMPLES = [
   { num: 5, scenario: "Accounting practice · Understanding the no-memory behaviour", title: "Understanding the no-memory behaviour before it catches you", prompt: "I'm learning to use Claude for my accounting practice. I've heard that Claude doesn't remember previous conversations. Before I build any workflows around Claude, explain:\n1. Exactly what this means in practice\n2. What I should do to keep useful context available across sessions\n3. Whether there's a way to give Claude persistent context about my business\n\nKeep this practical.", why: "Numbered questions get structured answers. \"Keep it practical\" is an explicit constraint." }
 ];
 
-const MIN_CHARS = 600;
 
 export default function LessonShell({
   lesson,
@@ -65,11 +64,27 @@ export default function LessonShell({
   lesson: Lesson;
   lessonPages: LessonPage[];
   learner: Learner;
-  priorSubmission: string | null;
+  priorSubmission: string | Record<string, string> | null;
   priorGrade: { score: number; feedback: string; rubric: { label: string; score: number; max: number; tone?: "warn" | "danger" }[] } | null;
 }) {
   const router = useRouter();
-  const [submission, setSubmission] = useState(priorSubmission ?? "");
+  // Per-section answers — try to seed from a structured priorSubmission if it's a {q1,q2,q3} object,
+  // else fall back to the legacy single-string submission split heuristically by 1./2./3. markers.
+  function seedSection(idx: 0 | 1 | 2): string {
+    if (priorSubmission && typeof priorSubmission === "object") {
+      const obj = priorSubmission as Record<string, string>;
+      return obj[`q${idx + 1}`] ?? "";
+    }
+    if (typeof priorSubmission === "string" && priorSubmission.length > 0) {
+      // Split on lines starting with 1./2./3. (with optional leading whitespace)
+      const parts = priorSubmission.split(/(?:^|\n)\s*[123]\.\s+/m).filter(Boolean);
+      return parts[idx] ?? "";
+    }
+    return "";
+  }
+  const [q1, setQ1] = useState(seedSection(0));
+  const [q2, setQ2] = useState(seedSection(1));
+  const [q3, setQ3] = useState(seedSection(2));
   const [grade, setGrade] = useState<GradeResult | null>(priorGrade ? { ok: true, scoreOverall: priorGrade.score, feedback: priorGrade.feedback, rubric: priorGrade.rubric } : null);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -115,12 +130,26 @@ export default function LessonShell({
     if (dx < 0) goToPage(pageIdx + 1); // swiped left -> next page
     else goToPage(pageIdx - 1); // swiped right -> previous page
   }
-  const submissionRef = useRef<HTMLTextAreaElement>(null);
   const gradeRef = useRef<HTMLDivElement>(null);
 
-  const wordCount = submission.trim() === "" ? 0 : submission.trim().split(/\s+/).length;
-  const charCount = submission.length;
-  const canSubmit = charCount >= MIN_CHARS && !pending;
+  function countWords(s: string): number {
+    const t = s.trim();
+    return t === "" ? 0 : t.split(/\s+/).length;
+  }
+  const w1 = countWords(q1);
+  const w2 = countWords(q2);
+  const w3 = countWords(q3);
+  // Word minimums — 3 sections, each independently gated:
+  // Q1 (How Claude actually works) 80-120 words → min 80
+  // Q2 (Three tasks, 50-70 each)   → min 150 (3 × 50)
+  // Q3 (Your first precise prompt) 60-100 words → min 60
+  const Q1_MIN = 80, Q1_MAX = 120;
+  const Q2_MIN = 150, Q2_MAX = 210;
+  const Q3_MIN = 60, Q3_MAX = 100;
+  const q1Ok = w1 >= Q1_MIN;
+  const q2Ok = w2 >= Q2_MIN;
+  const q3Ok = w3 >= Q3_MIN;
+  const canSubmit = q1Ok && q2Ok && q3Ok && !pending;
 
   // Reading progress bar
   useEffect(() => {
@@ -404,23 +433,87 @@ export default function LessonShell({
               <div className="submission-wrap">
                 <div className="submission-label">
                   <span className="label-dot" />
-                  Your submission
+                  Your submission · 3 questions
                 </div>
-                <textarea
-                  ref={submissionRef}
-                  name="submission"
-                  className="submission-input"
-                  value={submission}
-                  onChange={e => setSubmission(e.target.value)}
-                  placeholder="Paste or type your three sections here.&#10;&#10;1. How Claude actually works (80–120 words) — pick one strength and one limit, explain why each is what it is.&#10;&#10;2. Three tasks in your work where Claude could earn its keep (50–70 words each).&#10;&#10;3. Your first precise prompt (60–100 words) — for one of your three tasks: who you are, your context, what you want, what 'good' looks like."
-                  disabled={pending}
-                />
+
+                <div className="q-field">
+                  <div className="q-field-head">
+                    <span className="q-field-num">1</span>
+                    <div>
+                      <div className="q-field-title">How Claude actually works</div>
+                      <div className="q-field-hint">Pick one strength and one limit. Explain <em>why</em> — tie back to how Claude works or how it was trained. <strong>{Q1_MIN}–{Q1_MAX} words.</strong></div>
+                    </div>
+                  </div>
+                  <textarea
+                    name="q1"
+                    className="submission-input"
+                    rows={6}
+                    value={q1}
+                    onChange={e => setQ1(e.target.value)}
+                    placeholder="One thing Claude is good at: …&#10;Why: …&#10;&#10;One thing Claude is not good at: …&#10;Why: …"
+                    disabled={pending}
+                  />
+                  <div className="q-field-foot">
+                    <span className={q1Ok ? "stat-ok" : "stat-warn"}>
+                      {w1} word{w1 === 1 ? "" : "s"} · {q1Ok ? (w1 > Q1_MAX ? `${w1 - Q1_MAX} over the cap` : "✓ in range") : `${Q1_MIN - w1} more to reach min`}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="q-field">
+                  <div className="q-field-head">
+                    <span className="q-field-num">2</span>
+                    <div>
+                      <div className="q-field-title">Three tasks where Claude could earn its keep</div>
+                      <div className="q-field-hint">For each task: (a) the specific task, (b) where it sits in your week, (c) the Claude strength that suits it. If a task hits one of Claude&apos;s limits, name how you&apos;d manage it. <strong>3 tasks, 50–70 words each ({Q2_MIN}–{Q2_MAX} total).</strong></div>
+                    </div>
+                  </div>
+                  <textarea
+                    name="q2"
+                    className="submission-input"
+                    rows={10}
+                    value={q2}
+                    onChange={e => setQ2(e.target.value)}
+                    placeholder="Task 1: …&#10;Where it sits: …&#10;Strength used: …&#10;Limit to manage: …&#10;&#10;Task 2: …&#10;&#10;Task 3: …"
+                    disabled={pending}
+                  />
+                  <div className="q-field-foot">
+                    <span className={q2Ok ? "stat-ok" : "stat-warn"}>
+                      {w2} word{w2 === 1 ? "" : "s"} · {q2Ok ? (w2 > Q2_MAX ? `${w2 - Q2_MAX} over the cap` : "✓ in range") : `${Q2_MIN - w2} more to reach min (3 × 50)`}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="q-field">
+                  <div className="q-field-head">
+                    <span className="q-field-num">3</span>
+                    <div>
+                      <div className="q-field-title">Your first precise prompt</div>
+                      <div className="q-field-hint">Pick one task from above. Write the opening line you&apos;d give Claude — who you are, your context, what you want, what &quot;good&quot; looks like. <strong>{Q3_MIN}–{Q3_MAX} words.</strong></div>
+                    </div>
+                  </div>
+                  <textarea
+                    name="q3"
+                    className="submission-input"
+                    rows={6}
+                    value={q3}
+                    onChange={e => setQ3(e.target.value)}
+                    placeholder="I&#39;m a [role] at [business]. We [context]. I need to [task]. The audience is [who]. Good looks like: [criteria]…"
+                    disabled={pending}
+                  />
+                  <div className="q-field-foot">
+                    <span className={q3Ok ? "stat-ok" : "stat-warn"}>
+                      {w3} word{w3 === 1 ? "" : "s"} · {q3Ok ? (w3 > Q3_MAX ? `${w3 - Q3_MAX} over the cap` : "✓ in range") : `${Q3_MIN - w3} more to reach min`}
+                    </span>
+                  </div>
+                </div>
+
                 <div className="submission-foot">
                   <div className="submission-stats">
-                    <span>Words: <span className="stat-value">{wordCount}</span></span>
-                    <span>Characters: <span className="stat-value">{charCount}</span></span>
-                    <span className={charCount >= MIN_CHARS ? "stat-ok" : "stat-warn"}>
-                      {charCount >= MIN_CHARS ? "Ready to submit" : `${MIN_CHARS - charCount} more chars`}
+                    <span className={canSubmit ? "stat-ok" : "stat-warn"}>
+                      {canSubmit
+                        ? "All three questions ready — submit for grading"
+                        : `${[!q1Ok && "Q1", !q2Ok && "Q2", !q3Ok && "Q3"].filter(Boolean).join(", ")} below word count`}
                     </span>
                   </div>
                   <button type="submit" className="btn btn-primary" disabled={!canSubmit}>
@@ -485,8 +578,9 @@ export default function LessonShell({
                 <button
                   onClick={() => {
                     setGrade(null);
-                    submissionRef.current?.focus();
-                    submissionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+                    const firstField = document.querySelector('textarea[name="q1"]') as HTMLTextAreaElement | null;
+                    firstField?.focus();
+                    firstField?.scrollIntoView({ behavior: "smooth", block: "center" });
                   }}
                   className="btn btn-outline"
                 >

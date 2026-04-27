@@ -628,3 +628,59 @@ a:hover { text-decoration: underline; }
   border-radius: 100px;
   font-feature-settings: "tnum";
 }
+
+/* Per-question submission fields — each question label + hint sits directly above its own answer field */
+.submission-wrap .q-field {
+  margin-bottom: 22px;
+  padding: 18px 20px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.submission-wrap .q-field:last-of-type { margin-bottom: 18px; }
+.q-field-head {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+.q-field-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: white;
+  font-weight: 800;
+  font-size: 0.88rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.q-field-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.005em;
+  margin-bottom: 4px;
+}
+.q-field-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+.q-field-hint strong { color: var(--text); font-weight: 700; }
+.q-field-hint em { color: var(--text); font-style: italic; }
+.q-field .submission-input {
+  background: var(--surface);
+  margin-bottom: 8px;
+}
+.q-field-foot {
+  font-size: 0.78rem;
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 600px) {
+  .submission-wrap .q-field { padding: 14px 14px; }
+  .q-field-head { grid-template-columns: 26px 1fr; gap: 10px; }
+  .q-field-num { width: 24px; height: 24px; font-size: 0.78rem; }
+  .q-field-title { font-size: 0.95rem; }
+}
