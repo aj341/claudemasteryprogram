@@ -6,7 +6,8 @@ import { eq, and, desc } from "drizzle-orm";
 import { LESSON_1_1, LESSON_1_1_PAGES } from "@/lib/lessons/1-1-content";
 import LessonShell from "@/components/lesson/LessonShell";
 import LessonView, { type LessonViewData, type ModuleNavItem } from "@/components/lesson/LessonView";
-import { getLessonBySlug, listAllLessons, getModuleTitle } from "@/lib/lessons";
+import { getLessonBySlug, listAllLessons, getModuleTitle, pickExamplesForIndustry } from "@/lib/lessons";
+import { normaliseIndustry } from "@/lib/industries";
 
 const HARDCODED_1_1_SLUG = "1.1-what-claude-is-and-what-it-isnt";
 
@@ -55,6 +56,8 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
 
   const userId = session.user.id;
   const [profile] = await db.select().from(profiles).where(eq(profiles.userId, userId));
+  // W1-T03: gate — deep links into a lesson before onboarding bounce to /onboarding
+  if (!profile?.onboardingComplete) redirect("/onboarding");
   const fullName = profile?.fullName ?? session.user.name ?? "";
   const firstName = (fullName || session.user.email!.split("@")[0]).split(" ")[0];
 
@@ -115,6 +118,17 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
   // markdown loader. If for any reason the hardcoded source goes missing
   // we fall back to the markdown path.
   if (slug === HARDCODED_1_1_SLUG) {
+    // W1-T03: hardcoded 1.1 path uses the same personalisation filter as the
+    // generic loader. We read the .md file's parsed examples + personalisation
+    // config so the hardcoded React content stays in sync with the .md source.
+    const sourceLesson = getLessonBySlug(HARDCODED_1_1_SLUG);
+    const learnerIndustryShell = normaliseIndustry(profile?.industry ?? null);
+    const filteredShellExamples = sourceLesson
+      ? pickExamplesForIndustry(sourceLesson.examples, sourceLesson.personalisation, learnerIndustryShell)
+      : [];
+    const tunedShellLabel = sourceLesson?.personalisation?.mode === "industry-personalised" && learnerIndustryShell
+      ? learnerIndustryShell
+      : null;
     return (
       <LessonShell
         lesson={LESSON_1_1}
@@ -122,6 +136,8 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
         learner={learner}
         priorSubmission={existingSubmission?.responses ? (existingSubmission.responses as Record<string, string>) : null}
         priorGrade={priorGrade}
+        personalisedExamples={filteredShellExamples}
+        tunedForLabel={tunedShellLabel}
       />
     );
   }
@@ -129,6 +145,15 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
   // -------- All other lessons render from markdown via the generic loader. --------
   const lesson = getLessonBySlug(slug);
   if (!lesson) notFound();
+
+  // W1-T03: industry personalisation. Filter examples down to the one that
+  // matches the learner's industry (or default_index) before rendering. For
+  // keep-all and no-config lessons this is a no-op pass-through.
+  const learnerIndustry = normaliseIndustry(profile?.industry ?? null);
+  const filteredExamples = pickExamplesForIndustry(lesson.examples, lesson.personalisation, learnerIndustry);
+  const tunedForLabel = lesson.personalisation?.mode === "industry-personalised" && learnerIndustry
+    ? learnerIndustry
+    : null;
 
   const lessonViewData: LessonViewData = {
     slug: lesson.slug,
@@ -142,7 +167,9 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
     prerequisites: lesson.prerequisites,
     objectives: lesson.objectives,
     body: lesson.body,
-    examples: lesson.examples,
+    examples: filteredExamples,
+    workedExamplesContent: lesson.workedExamplesContent,
+    tunedForLabel,
     deliverable: lesson.deliverable
       ? {
           title: lesson.deliverable.title,

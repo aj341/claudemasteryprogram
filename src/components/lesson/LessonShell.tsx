@@ -54,18 +54,28 @@ const EXAMPLES = [
 ];
 
 
+type ShellExample = { num: number; scenario: string; title: string; prompt: string; why: string };
+
 export default function LessonShell({
   lesson,
   lessonPages,
   learner,
   priorSubmission,
-  priorGrade
+  priorGrade,
+  personalisedExamples,
+  tunedForLabel
 }: {
   lesson: Lesson;
   lessonPages: LessonPage[];
   learner: Learner;
   priorSubmission: string | Record<string, string> | null;
   priorGrade: { score: number; feedback: string; rubric: { label: string; score: number; max: number; tone?: "warn" | "danger" }[] } | null;
+  // W1-T03: examples filtered for the learner's industry. When provided, this
+  // overrides the local hardcoded EXAMPLES constant. Falls back to EXAMPLES so
+  // the original 5-card flow still works during development.
+  personalisedExamples?: ShellExample[];
+  // W1-T03: industry label to surface in the "Tuned for {label}" hero badge.
+  tunedForLabel?: string | null;
 }) {
   const router = useRouter();
   // Per-section answers — try to seed from a structured priorSubmission if it's a {q1,q2,q3} object,
@@ -281,6 +291,12 @@ export default function LessonShell({
             <div className="lesson-eyebrow"><span className="dot" /> Module {lesson.module} · Lesson {lesson.number}</div>
             <h1 className="lesson-title">{lesson.title}</h1>
             <p className="lesson-lead">{lesson.lead}</p>
+            {tunedForLabel && (
+              <div className="tuned-badge" aria-label={`Lesson examples tuned for ${tunedForLabel}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                Tuned for {tunedForLabel}
+              </div>
+            )}
             <div className="lesson-meta-row">
               <div className="meta-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
@@ -365,20 +381,31 @@ export default function LessonShell({
             <span className="line" />
           </div>
 
-          <h2 className="section-heading">Five prompts that get useful answers</h2>
-          <p className="section-sub">Each example shows a real scenario, the actual prompt, and why it works.</p>
-
-          {EXAMPLES.map(ex => (
-            <div key={ex.num} className="example-card">
-              <div className="example-header">
-                <span className="example-num-chip">Example {ex.num}</span>
-                <span className="example-scenario">{ex.scenario}</span>
-              </div>
-              <div className="example-title">{ex.title}</div>
-              <div className="example-prompt">{ex.prompt}</div>
-              <div className="example-why"><strong>Why it works:</strong> {ex.why}</div>
-            </div>
-          ))}
+          {(() => {
+            const exs: ShellExample[] = personalisedExamples && personalisedExamples.length > 0
+              ? personalisedExamples
+              : EXAMPLES;
+            const heading = exs.length === 1
+              ? "One example, tuned to your industry"
+              : `${exs.length === 5 ? "Five" : exs.length} prompts that get useful answers`;
+            return (
+              <>
+                <h2 className="section-heading">{heading}</h2>
+                <p className="section-sub">Each example shows a real scenario, the actual prompt, and why it works.</p>
+                {exs.map(ex => (
+                  <div key={ex.num} className="example-card">
+                    <div className="example-header">
+                      <span className="example-num-chip">Example {ex.num}</span>
+                      <span className="example-scenario">{ex.scenario}</span>
+                    </div>
+                    <div className="example-title">{ex.title}</div>
+                    <div className="example-prompt">{ex.prompt}</div>
+                    <div className="example-why"><strong>Why it works:</strong> {ex.why}</div>
+                  </div>
+                ))}
+              </>
+            );
+          })()}
 
           {/* DELIVERABLE */}
           <div className="section-divider">

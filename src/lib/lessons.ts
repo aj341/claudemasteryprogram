@@ -38,6 +38,14 @@ export type LessonExample = {
   why: string;
 };
 
+// W1-T03: Per-lesson industry personalisation config parsed from a JSON HTML
+// comment inside the ## Worked examples section. Drives pickExamplesForIndustry.
+export type LessonPersonalisation = {
+  mode: "industry-personalised" | "keep-all";
+  default_index: number;
+  mapping: Record<string, number>;
+};
+
 export type LessonData = {
   slug: string;
   module: string;
@@ -51,6 +59,14 @@ export type LessonData = {
   objectives: string[];
   body: { pages: LessonPageData[] };
   examples: LessonExample[];
+  // W1-T03: personalisation rules. null when the lesson has no ## Worked examples
+  // section at all (e.g. 1.3, 1.4, 6.4). { mode: "keep-all", ... } when the lesson
+  // has worked examples but no JSON config block (e.g. 2.4, 2.5, 3.6, 4.1, 4.5, 5.5).
+  personalisation: LessonPersonalisation | null;
+  // W1-T03: raw HTML of the ## Worked examples body when no Example N: blocks
+  // parse (i.e. 5.5's four-tier decision table). Render this verbatim under the
+  // Worked examples heading. null when the section parses normally or is missing.
+  workedExamplesContent: string | null;
   deliverable: LessonDeliverable | null;
   sourcePath: string;
 };
@@ -120,6 +136,38 @@ function blockMdToHtml(block: string): string {
     if (line.startsWith("## ")) {
       out.push(`<h3>${inlineMd(escapeHtml(line.slice(3)))}</h3>`);
       i++;
+      continue;
+    }
+
+    // Markdown pipe-tables. Header row must be followed by a separator row of
+    // dashes/colons. We leave alignment unsupported (no left/right/center) since
+    // the lesson content doesn't use it. This exists primarily to render 5.5's
+    // four-tier decision table in the worked-examples section.
+    const isTableRow = (l: string) => /^\s*\|.*\|\s*$/.test(l);
+    const isTableSep = (l: string) => /^\s*\|?\s*[:\-\| ]+\s*\|?\s*$/.test(l) && /-/.test(l);
+    if (isTableRow(line) && i + 1 < lines.length && isTableSep(lines[i + 1])) {
+      const splitRow = (l: string): string[] =>
+        l.trim().replace(/^\||\|$/g, "").split("|").map(c => c.trim());
+      const headers = splitRow(line);
+      i += 2; // header + separator
+      const rows: string[][] = [];
+      while (i < lines.length && isTableRow(lines[i])) {
+        rows.push(splitRow(lines[i]));
+        i++;
+      }
+      let html = "<table><thead><tr>";
+      for (const h of headers) html += `<th>${inlineMd(escapeHtml(h))}</th>`;
+      html += "</tr></thead><tbody>";
+      for (const r of rows) {
+        html += "<tr>";
+        for (let c = 0; c < headers.length; c++) {
+          const cell = r[c] ?? "";
+          html += `<td>${inlineMd(escapeHtml(cell))}</td>`;
+        }
+        html += "</tr>";
+      }
+      html += "</tbody></table>";
+      out.push(html);
       continue;
     }
 
@@ -296,7 +344,9 @@ function buildPages(md: string, header: ReturnType<typeof parseHeader>): LessonP
 function parseExamples(md: string): LessonExample[] {
   const exMatch = md.match(/^##\s+Worked examples\s*\n([\s\S]*?)(?=\n##\s+(?:Graded deliverable|Notes|Industry|Source)|\n---\s*\n##\s+)/m);
   if (!exMatch) return [];
-  const body = exMatch[1];
+  // W1-T03: skip the JSON comment so the regex below doesn't try to match
+  // ### Example inside it (it doesn't, but keep the body lean for safety).
+  const body = exMatch[1].replace(/<!--\s*industry-personalisation[\s\S]*?-->/g, "");
 
   const examples: LessonExample[] = [];
   const re = /^###\s+Example\s+(\d+):\s*(.+)$/gm;
@@ -435,6 +485,70 @@ function parseDeliverable(md: string): LessonDeliverable | null {
   return { title, brief, sections, rubric, passMark, graderNotes };
 }
 
+// W1-T03: Parse the JSON config block embedded in the ## Worked examples section.
+// Looks for a single HTML comment of the form:
+//   <!-- industry-personalisation
+//   { ... JSON ... }
+//   -->
+// Returns null if no comment is present. The caller falls back to keep-all when
+// examples exist without a config block, or to null when the section is missing.
+function parsePersonalisationBlock(workedExamplesBody: string): LessonPersonalisation | null {
+  const m = workedExamplesBody.match(/<!--\s*industry-personalisation\s*([\s\S]*?)\s*-->/);
+  if (!m) return null;
+  const raw = m[1].trim();
+  try {
+    const parsed = JSON.parse(raw) as LessonPersonalisation;
+    if (parsed && (parsed.mode === "industry-personalised" || parsed.mode === "keep-all")) {
+      return {
+        mode: parsed.mode,
+        default_index: typeof parsed.default_index === "number" ? parsed.default_index : 0,
+        mapping: parsed.mapping && typeof parsed.mapping === "object" ? parsed.mapping : {}
+      };
+    }
+  } catch (err) {
+    console.warn("[lessons] industry-personalisation JSON failed to parse:", err);
+  }
+  return null;
+}
+
+// W1-T03: For 5.5's case, capture the body of ## Worked examples when it
+// doesn't yield any Example N: blocks. We render this as raw HTML inside the
+// worked-examples slot. Returns null when there's nothing to render.
+function extractWorkedExamplesContent(md: string, hasParsedExamples: boolean): string | null {
+  if (hasParsedExamples) return null;
+  const exMatch = md.match(/^##\s+Worked examples\s*\n([\s\S]*?)(?=\n##\s+(?:Graded deliverable|Notes|Industry|Source)|\n---\s*\n##\s+)/m);
+  if (!exMatch) return null;
+  // Strip the personalisation comment so we don't render it
+  let body = exMatch[1].replace(/<!--\s*industry-personalisation[\s\S]*?-->/g, "").trim();
+  if (!body) return null;
+  return blockMdToHtml(body);
+}
+
+// W1-T03: Pure filter — picks the worked examples a learner with the given
+// industry should see, based on the lesson's personalisation config.
+//   - keep-all (or null mapping)  → return examples unchanged (5 cards)
+//   - industry-personalised        → return [examples[mapping[industry] ?? default_index]]
+//                                    clamped to a valid index. Single-element array
+//                                    (or empty if examples is empty / index OOB).
+//   - personalisation null         → return examples unchanged (no config, no rules)
+// The lesson with no ## Worked examples section never reaches this function.
+export function pickExamplesForIndustry(
+  examples: LessonExample[],
+  personalisation: LessonPersonalisation | null,
+  industry: string | null | undefined
+): LessonExample[] {
+  if (!personalisation || personalisation.mode === "keep-all") return examples;
+  if (examples.length === 0) return [];
+  const mapping = personalisation.mapping ?? {};
+  const fallback = personalisation.default_index ?? 0;
+  let chosen = (industry && industry in mapping) ? mapping[industry] : fallback;
+  if (typeof chosen !== "number" || Number.isNaN(chosen)) chosen = 0;
+  // Clamp to valid range so a config that drifts ahead of an example doesn't crash
+  if (chosen < 0) chosen = 0;
+  if (chosen >= examples.length) chosen = examples.length - 1;
+  return [examples[chosen]];
+}
+
 function lessonFiles(): string[] {
   const root = contentRoot();
   if (!fs.existsSync(root)) return [];
@@ -495,6 +609,19 @@ export function getLessonBySlug(slug: string): LessonData | null {
       const deliverable = parseDeliverable(md);
       const moduleDir = path.basename(path.dirname(file));
 
+      // W1-T03: parse personalisation config + capture worked-examples body fallback (for 5.5)
+      const exMatch = md.match(/^##\s+Worked examples\s*\n([\s\S]*?)(?=\n##\s+(?:Graded deliverable|Notes|Industry|Source)|\n---\s*\n##\s+)/m);
+      const workedExamplesBody = exMatch ? exMatch[1] : "";
+      let personalisation = parsePersonalisationBlock(workedExamplesBody);
+      if (!personalisation && examples.length > 0) {
+        // Worked-examples section present, no JSON config → keep-all (e.g. 2.4, 2.5, 3.6, 4.1, 4.5)
+        personalisation = { mode: "keep-all", default_index: 0, mapping: {} };
+      } else if (!personalisation && !exMatch) {
+        // Section missing entirely (e.g. 1.3, 1.4, 6.4) — leave personalisation null
+        personalisation = null;
+      }
+      const workedExamplesContent = extractWorkedExamplesContent(md, examples.length > 0);
+
       return {
         slug,
         module: moduleDir.split("-")[0] || header.moduleNum,
@@ -508,6 +635,8 @@ export function getLessonBySlug(slug: string): LessonData | null {
         objectives: header.objectives,
         body: { pages },
         examples,
+        personalisation,
+        workedExamplesContent,
         deliverable,
         sourcePath: path.relative(process.cwd(), file)
       };

@@ -39,6 +39,13 @@ export type LessonViewData = {
   objectives: string[];
   body: { pages: LessonPage[] };
   examples: Example[];
+  // W1-T03: rendered HTML body of the ## Worked examples section when no
+  // Example N: blocks parse (i.e. 5.5's decision table). Rendered verbatim.
+  workedExamplesContent: string | null;
+  // W1-T03: industry label (e.g. "Trades & Construction") to surface in a
+  // small "Tuned for {label}" hero badge. null when the lesson is keep-all
+  // or the user has no industry set.
+  tunedForLabel: string | null;
   deliverable: Deliverable | null;
 };
 
@@ -283,6 +290,12 @@ export default function LessonView({
             <div className="lesson-eyebrow"><span className="dot" /> Module {lesson.module} · Lesson {lesson.number}</div>
             <h1 className="lesson-title">{lesson.title}</h1>
             <p className="lesson-lead">{lesson.lead}</p>
+            {lesson.tunedForLabel && (
+              <div className="tuned-badge" aria-label={`Lesson examples tuned for ${lesson.tunedForLabel}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                Tuned for {lesson.tunedForLabel}
+              </div>
+            )}
             <div className="lesson-meta-row">
               <div className="meta-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
@@ -361,7 +374,22 @@ export default function LessonView({
             </div>
           </section>
 
-          {/* WORKED EXAMPLES */}
+          {/* WORKED EXAMPLES — content fallback (e.g. 5.5 decision table) */}
+          {lesson.examples.length === 0 && lesson.workedExamplesContent && (
+            <>
+              <div className="section-divider">
+                <span className="line" />
+                <span className="label">Worked examples</span>
+                <span className="line" />
+              </div>
+              <div
+                className="worked-examples-content"
+                dangerouslySetInnerHTML={{ __html: lesson.workedExamplesContent }}
+              />
+            </>
+          )}
+
+          {/* WORKED EXAMPLES — Example N: cards */}
           {lesson.examples.length > 0 && (
             <>
               <div className="section-divider">
@@ -369,7 +397,7 @@ export default function LessonView({
                 <span className="label">Worked examples</span>
                 <span className="line" />
               </div>
-              <h2 className="section-heading">{lesson.examples.length} prompts that get useful answers</h2>
+              <h2 className="section-heading">{lesson.examples.length === 1 ? "One example, tuned to your industry" : `${lesson.examples.length} prompts that get useful answers`}</h2>
               <p className="section-sub">Each example shows a real scenario, the actual prompt, and why it works.</p>
               {lesson.examples.map(ex => (
                 <div key={ex.num} className="example-card">
