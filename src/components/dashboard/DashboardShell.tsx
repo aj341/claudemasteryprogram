@@ -297,7 +297,7 @@ export default function DashboardShell({
                   <div className="continue-meta-item"><span className="continue-meta-label">Progress</span><span className="continue-meta-value">40%</span></div>
                 </div>
                 <div className="continue-actions">
-                  <a href="#lesson" className="btn btn-white">Continue lesson →</a>
+                  <Link href="/lessons/1.1-what-claude-is-and-what-it-isnt" className="btn btn-white">Continue lesson →</Link>
                   <a href="#module" className="btn btn-outline-light">Module overview</a>
                 </div>
               </div>
@@ -318,8 +318,8 @@ export default function DashboardShell({
                   <div className="continue-meta-item"><span className="continue-meta-label">Graded by</span><span className="continue-meta-value">Claude · 4-criteria rubric</span></div>
                 </div>
                 <div className="continue-actions">
-                  <button onClick={() => { setEditing(true); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="btn btn-white">Edit your profile ↑</button>
-                  <a href="https://commercialgrowth.com.au/claudemastery" className="btn btn-outline-light">Read the brief</a>
+                  <Link href="/lessons/1.1-what-claude-is-and-what-it-isnt" className="btn btn-white">Start Lesson 1.1 →</Link>
+                  <button onClick={() => { setEditing(true); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="btn btn-outline-light">Edit your profile ↑</button>
                 </div>
               </div>
             </div>
@@ -412,7 +412,13 @@ export default function DashboardShell({
               <div className="section-sub">Here&apos;s how the first week plays out. Every lesson ends in a deliverable. Every deliverable is graded by Claude against a four-criteria rubric.</div>
               <div className="lesson-grid">
                 {MODULE_1_LESSONS.slice(0, 2).map((l) => (
-                  <article key={l.slug} className="lesson-card">
+                  <Link
+                    key={l.slug}
+                    href={l.number === "1.1" ? `/lessons/${l.slug}` : "#"}
+                    className="lesson-card"
+                    style={l.number !== "1.1" ? { opacity: 0.55, cursor: "default" } : undefined}
+                    onClick={(e) => { if (l.number !== "1.1") e.preventDefault(); }}
+                  >
                     <div className="lesson-card-top">
                       <div>
                         <div className="lesson-card-num">LESSON {l.number} · {l.weekday.toUpperCase()}</div>
@@ -427,7 +433,7 @@ export default function DashboardShell({
                       <span className="lesson-card-time">{l.estTime}</span>
                       <span className="lesson-card-time">{l.graded ? "Deliverable" : "Primer · not graded"}</span>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </section>

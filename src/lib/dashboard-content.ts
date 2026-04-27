@@ -40,7 +40,7 @@ export type LessonMeta = {
 };
 
 export const MODULE_1_LESSONS: LessonMeta[] = [
-  { slug: "1.1-what-claude-is-and-what-it-isnt", number: "1.1", title: "What Claude actually is", blurb: "The honest version. What Claude is very good at, what it's bad at, where the edges are. No marketing — just what you need to know to use it well.", weekday: "Mon", estTime: "~ 15 min", graded: false, primer: true },
+  { slug: "1.1-what-claude-is-and-what-it-isnt", number: "1.1", title: "What Claude actually is", blurb: "The honest version. What Claude is very good at, what it's bad at, where the edges are. No marketing — just what you need to know to use it well.", weekday: "Mon", estTime: "~ 15 min", graded: true, primer: true },
   { slug: "1.2-write-your-first-real-prompt", number: "1.2", title: "Write your first real prompt", blurb: "Compose a prompt for a real task from your business. Graded on clarity, context, and constraints. This is where grading begins.", weekday: "Tue", estTime: "~ 18 min", graded: true },
   { slug: "1.3-audit-your-current-ai-use", number: "1.3", title: "Audit your current AI use", blurb: "Map how and how well you're using AI right now. Captures your stack, comfort level, and tasks you've already tried.", weekday: "Wed", estTime: "~ 22 min", graded: true },
   { slug: "1.4-map-your-weekly-tasks", number: "1.4", title: "Map your weekly tasks", blurb: "Identify the highest-value tasks in your week that Claude can take a run at. Fed by what you captured in 1.3.", weekday: "Thu", estTime: "~ 20 min", graded: true },
