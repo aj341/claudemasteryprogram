@@ -29,7 +29,7 @@ export function weeklyProgressHtml({ firstName, weekNumber, completedLastWeek, q
       </tr>`).join("");
 
   const queuedRows = queuedThisWeek.length === 0
-    ? `<tr><td style="padding:10px 0;font-size:14px;color:${tokens.textFaint};font-style:italic;font-family:${tokens.font};">No lessons queued — check your dashboard.</td></tr>`
+    ? `<tr><td style="padding:10px 0;font-size:14px;color:${tokens.textFaint};font-style:italic;font-family:${tokens.font};">No lessons queued &mdash; check your dashboard.</td></tr>`
     : queuedThisWeek.map(l => `
       <tr>
         <td style="padding:10px 0;font-size:14px;color:${tokens.text};font-family:${tokens.font};">
@@ -38,8 +38,8 @@ export function weeklyProgressHtml({ firstName, weekNumber, completedLastWeek, q
       </tr>`).join("");
 
   const inner = `
-    ${h1(`Week ${weekNumber} — your week ahead`)}
-    ${p(`Morning ${escapeHtml(firstName)}. Here's where you stand and what's queued.`)}
+    ${h1(`Week ${weekNumber} &mdash; your week ahead`)}
+    ${p(`Morning ${escapeHtml(firstName)}. Here&lsquo;s where you stand and what&lsquo;s queued.`)}
 
     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:20px 0;">
       <tr>
@@ -60,13 +60,13 @@ export function weeklyProgressHtml({ firstName, weekNumber, completedLastWeek, q
 
     ${divider()}
 
-    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:${tokens.text};font-family:${tokens.font};">Last week — completed</p>
+    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:${tokens.text};font-family:${tokens.font};">Last week &mdash; completed</p>
     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px;">${completedRows}</table>
 
-    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:${tokens.text};font-family:${tokens.font};">This week — queued</p>
+    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:${tokens.text};font-family:${tokens.font};">This week &mdash; queued</p>
     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 28px;">${queuedRows}</table>
 
-    ${primaryButton(dashboardUrl, "Pick up where you left off →")}
+    ${primaryButton(dashboardUrl, "Pick up where you left off &rarr;")}
   `;
   return brandShell(inner);
 }
@@ -74,29 +74,29 @@ export function weeklyProgressHtml({ firstName, weekNumber, completedLastWeek, q
 export function weeklyProgressText({ firstName, weekNumber, completedLastWeek, queuedThisWeek, averageGrade, currentStreak, dashboardUrl }: WeeklyProgressProps): string {
   const completedLines = completedLastWeek.length === 0
     ? "  (no lessons completed last week)"
-    : completedLastWeek.map(l => `  ${l.lessonNumber}  ${l.title} — ${l.score}/100`).join("\n");
+    : completedLastWeek.map(l => `  ${l.lessonNumber}  ${l.title} &mdash; ${l.score}/100`).join("\n");
   const queuedLines = queuedThisWeek.length === 0
     ? "  (no lessons queued)"
     : queuedThisWeek.map(l => `  ${l.lessonNumber}  ${l.title}`).join("\n");
 
-  return `Week ${weekNumber} — your week ahead
+  return `Week ${weekNumber} &mdash; your week ahead
 
-Morning ${firstName}. Here's where you stand and what's queued.
+Morning ${firstName}. Here&lsquo;s where you stand and what&lsquo;s queued.
 
 Avg grade: ${averageGrade}/100
 Current streak: ${currentStreak} days
 
-Last week — completed
+Last week &mdash; completed
 ${completedLines}
 
-This week — queued
+This week &mdash; queued
 ${queuedLines}
 
 Pick up where you left off: ${dashboardUrl}
 
-— Commercial Growth Pty Ltd`;
+&mdash; Commercial Growth Pty Ltd`;
 }
 
 function escapeHtml(s: string): string {
-  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]!));
+  return String(s).replace(/[&<>"&lsquo;]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "&lsquo;": "&#39;" }[c]!));
 }

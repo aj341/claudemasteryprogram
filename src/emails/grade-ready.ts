@@ -25,7 +25,7 @@ export function gradeReadyHtml({ firstName, lessonNumber, lessonTitle, score, fe
       <div style="font-size:48px;font-weight:800;color:${tokens.text};margin:12px 0 4px;letter-spacing:-0.02em;font-family:${tokens.font};">${score}<span style="font-size:24px;color:${tokens.textFaint};font-weight:600;">/100</span></div>
       <div style="font-size:14px;color:${tokens.textBody};line-height:1.5;font-family:${tokens.font};">${escapeHtml(feedbackTeaser)}</div>
     </div>
-    ${primaryButton(lessonUrl, "View grade and feedback →")}
+    ${primaryButton(lessonUrl, "View grade and feedback &rarr;")}
     <p style="margin:32px 0 0;font-size:13px;color:${tokens.textFaint};line-height:1.6;font-family:${tokens.font};">Detailed rubric scores and personalised next steps are waiting in your dashboard.</p>
   `;
   return brandShell(inner);
@@ -41,9 +41,9 @@ ${feedbackTeaser}
 
 View grade and feedback: ${lessonUrl}
 
-— Commercial Growth Pty Ltd`;
+- Commercial Growth Pty Ltd`;
 }
 
 function escapeHtml(s: string): string {
-  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]!));
+  return String(s).replace(/[&<>"&lsquo;]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "&lsquo;": "&#39;" }[c]!));
 }

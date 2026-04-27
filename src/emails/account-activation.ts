@@ -16,17 +16,17 @@ export function accountActivationHtml({ firstName, activationUrl, cohortStartDat
     ${p("Your seat in the Claude Mastery Core cohort is confirmed.")}
     ${p(`We start <strong style="color:#111827;">${escape(cohortStartDate)}</strong>. Before then, set up your account and complete your profile so the course personalises itself to your role, goals, and the tools you actually use.`)}
     <div style="margin:28px 0 24px;">
-      ${primaryButton(activationUrl, "Set up your account →")}
+      ${primaryButton(activationUrl, "Set up your account &rarr;")}
     </div>
     ${divider()}
-    <p style="margin:0 0 12px;font-size:14px;font-weight:600;color:#111827;font-family:'Poppins',sans-serif;">What to expect</p>
-    <ul style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:1.7;font-family:'Poppins',sans-serif;">
-      <li>34 lessons across 6 modules — released weekly through the cohort</li>
+    <p style="margin:0 0 12px;font-size:14px;font-weight:600;color:#111827;font-family:&lsquo;Poppins&lsquo;,sans-serif;">What to expect</p>
+    <ul style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:1.7;font-family:&lsquo;Poppins&lsquo;,sans-serif;">
+      <li>34 lessons across 6 modules &mdash; released weekly through the cohort</li>
       <li>Each lesson is graded by Claude with personalised feedback</li>
-      <li>A Module 6 capstone you'll build using everything you've learned</li>
-      <li>One chance to repeat the cohort if you don't pass the capstone</li>
+      <li>A Module 6 capstone you&lsquo;ll build using everything you&lsquo;ve learned</li>
+      <li>One chance to repeat the cohort if you don&lsquo;t pass the capstone</li>
     </ul>
-    ${pSmall("If the button doesn't work, paste this into your browser:<br><span style=\"color:#1A9EDE;word-break:break-all;\">" + activationUrl + "</span>")}
+    ${pSmall("If the button doesn&lsquo;t work, paste this into your browser:<br><span style=\"color:#1A9EDE;word-break:break-all;\">" + activationUrl + "</span>")}
   `;
   return brandShell(inner);
 }
@@ -41,14 +41,14 @@ We start ${cohortStartDate}. Before then, set up your account and complete your 
 Set up your account: ${activationUrl}
 
 What to expect:
-- 34 lessons across 6 modules — released weekly
+- 34 lessons across 6 modules - released weekly
 - Each lesson graded by Claude with personalised feedback
 - A Module 6 capstone you'll build using everything you've learned
 - One chance to repeat the cohort if you don't pass the capstone
 
-— Commercial Growth Pty Ltd`;
+- Commercial Growth Pty Ltd`;
 }
 
 function escape(s: string): string {
-  return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]!));
+  return s.replace(/[&<>"&lsquo;]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "&lsquo;": "&#39;" }[c]!));
 }

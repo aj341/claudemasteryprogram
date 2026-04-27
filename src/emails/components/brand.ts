@@ -14,7 +14,7 @@ export const tokens = {
   surface: "#FFFFFF",
   surfaceMuted: "#F8FAFC",
   border: "#E5E7EB",
-  font: "'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"
+  font: "&lsquo;Poppins&lsquo;,-apple-system,BlinkMacSystemFont,&lsquo;Segoe UI&lsquo;,Roboto,sans-serif"
 };
 
 export function brandHeader(): string {
@@ -31,7 +31,7 @@ export function brandFooter(): string {
   return `
     <tr>
       <td style="padding:24px 40px;background:${tokens.surfaceMuted};border-top:1px solid ${tokens.border};font-size:12px;color:${tokens.textFaint};">
-        Commercial Growth Pty Ltd · ABN 72 671 869 298 · NSW Australia
+        Commercial Growth Pty Ltd &middot; ABN 72 671 869 298 &middot; NSW Australia
       </td>
     </tr>`;
 }
@@ -60,7 +60,12 @@ export function outlineButton(href: string, label: string): string {
 
 export function brandShell(innerHtml: string): string {
   return `<!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 <body style="margin:0;padding:0;background:${tokens.surfaceMuted};font-family:${tokens.font};color:${tokens.text};">
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${tokens.surfaceMuted};padding:40px 20px;">
     <tr>
