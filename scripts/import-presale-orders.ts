@@ -42,7 +42,7 @@ async function main() {
     console.error("STRIPE_SECRET_KEY is not set. Aborting.");
     process.exit(1);
   }
-  const stripe = new Stripe(key, { apiVersion: "2024-11-20.acacia", typescript: true });
+  const stripe = new Stripe(key, { apiVersion: "2025-02-24.acacia", typescript: true });
 
   const since = Math.floor(Date.now() / 1000) - sinceDays * 24 * 60 * 60;
   console.log(`[import] window: last ${sinceDays} days (since ${new Date(since * 1000).toISOString()})`);
