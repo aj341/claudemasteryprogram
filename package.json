@@ -22,7 +22,8 @@
     "resend": "^4.0.1",
     "stripe": "^17.4.0",
     "posthog-js": "^1.194.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

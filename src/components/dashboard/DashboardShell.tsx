@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
-import type { DashboardData } from "@/lib/dashboard-data";
-import { MODULE_1_LESSONS } from "@/lib/dashboard-data";
+import type { DashboardData } from "@/lib/dashboard-content";
+import { MODULE_1_LESSONS } from "@/lib/dashboard-content";
 import { updateProfileAction } from "@/lib/profile-actions";
 
 const INDUSTRIES = [
