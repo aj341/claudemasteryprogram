@@ -45,5 +45,6 @@ View grade and feedback: ${lessonUrl}
 }
 
 function escapeHtml(s: string): string {
-  return String(s).replace(/[&<>"&lsquo;]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "&lsquo;": "&#39;" }[c]!));
+  const _m: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" };
+  return String(s).replace(/[&<>"']/g, (c) => _m[c] ?? c);
 }

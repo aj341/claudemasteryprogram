@@ -50,5 +50,15 @@ What to expect:
 }
 
 function escape(s: string): string {
-  return s.replace(/[&<>"&lsquo;]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "&lsquo;": "&#39;" }[c]!));
+  // NOTE: previous version used `&lsquo;` inside the character class, which
+  // ripgrep'd-into a literal char class of [& l s q u o ;] and replaced every
+  // `u` (etc.) with `undefined`. Using real apostrophe + entity map fixes it.
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;"
+  };
+  return s.replace(/[&<>"']/g, (c) => map[c] ?? c);
 }
