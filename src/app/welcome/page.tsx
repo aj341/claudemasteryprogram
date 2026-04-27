@@ -31,8 +31,8 @@ export default async function WelcomePage() {
         </div>
         <h1>You&apos;re in.</h1>
         <p className="welcome-lede">
-          Welcome to the Claude Mastery cohort.
-          Cohort 1 launches <strong style={{ color: "var(--text)" }}>1 June 2026</strong> —
+          Welcome to the Claude Mastery Program.
+          The course launches <strong style={{ color: "var(--text)" }}>1 June 2026</strong> —
           we&apos;ll email you the morning of, with Lesson 1.1 ready to go.
         </p>
 

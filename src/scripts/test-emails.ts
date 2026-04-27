@@ -42,7 +42,7 @@ async function main() {
       ["payment_receipt", () => sendEmail("payment_receipt", to, {
         firstName: "AJ",
         orderId: "ord_test_" + Date.now().toString(36),
-        productName: "Claude Mastery — Core Cohort",
+        productName: "Claude Mastery — Core",
         amount: "$297.00 AUD",
         paidOn: "27 April 2026",
         cohortStartDate: "1 June 2026",

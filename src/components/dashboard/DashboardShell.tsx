@@ -138,7 +138,7 @@ export default function DashboardShell({
             <p data-state="day1" suppressHydrationWarning>
               {days > 0
                 ? `Lesson 1.1 lands ${LAUNCH_DATE_STR} 9:00 AEST. Set your profile below and the course tunes itself to your industry from day one.`
-                : "Your cohort is live. Lesson 1.1 is ready below."}
+                : "Your course is live. Lesson 1.1 is ready below."}
             </p>
             <p data-state="week2">
               You&apos;ve got one lesson in flight and a graded deliverable waiting for review. Best use of the next 20 minutes: finish the active lesson.

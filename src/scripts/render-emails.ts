@@ -51,7 +51,7 @@ const samples: Array<{ name: string; subject: string; html: string }> = [
   {
     name: "payment_receipt",
     subject: paymentReceiptSubject(),
-    html: paymentReceiptHtml({ firstName: "AJ", orderId: "ord_demo_42", productName: "Claude Mastery — Core Cohort", amount: "$297.00 AUD", paidOn: "27 April 2026", cohortStartDate: "1 June 2026", dashboardUrl: `${APP}/dashboard` })
+    html: paymentReceiptHtml({ firstName: "AJ", orderId: "ord_demo_42", productName: "Claude Mastery — Core", amount: "$297.00 AUD", paidOn: "27 April 2026", cohortStartDate: "1 June 2026", dashboardUrl: `${APP}/dashboard` })
   },
   {
     name: "weekly_progress",

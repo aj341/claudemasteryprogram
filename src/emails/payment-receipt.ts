@@ -3,7 +3,7 @@ import { brandShell, h1, p, primaryButton, statRow, tokens, divider } from "./co
 export interface PaymentReceiptProps {
   firstName: string;
   orderId: string;
-  productName: string;        // "Claude Mastery &mdash; Core Cohort"
+  productName: string;        // "Claude Mastery &mdash; Core"
   amount: string;             // "$297.00 AUD"
   paidOn: string;             // "27 April 2026"
   cohortStartDate: string;    // "1 June 2026"

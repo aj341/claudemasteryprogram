@@ -1,6 +1,7 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
+import { industrySlug, recommendedLessonFor } from "./personalisation-mappings";
 
 // ----- Types -----
 
@@ -659,4 +660,121 @@ export function getModuleSlug(moduleNum: string): string {
 
 export function getModuleTitle(moduleNum: string): string {
   return MODULE_TITLES[moduleNum] ?? `Module ${moduleNum}`;
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// W1-T03b: Personalisation engine — industry variants + token substitution.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type PersonalisationProfile = {
+  firstName?: string | null;
+  industry?: string | null;
+  businessName?: string | null;
+  weeklyTasks?: string[] | null;
+  goals?: string[] | null;
+  brandVoice?: string | null;
+  productsServices?: string | null;
+  customerSnapshot?: string | null;
+};
+
+function tryReadFile(absPath: string): string | null {
+  try {
+    if (!fs.existsSync(absPath)) return null;
+    return fs.readFileSync(absPath, "utf8");
+  } catch {
+    return null;
+  }
+}
+
+// Find the lesson's _source / industry variant on disk.
+// Path shape: content/lessons-personalised/{module-dir}/{slug}/{file}
+function findPersonalisedLessonDir(slug: string): string | null {
+  const root = path.resolve(process.cwd(), "content", "lessons-personalised");
+  if (!fs.existsSync(root)) return null;
+  for (const moduleDir of fs.readdirSync(root)) {
+    if (moduleDir.startsWith(".")) continue;
+    const lessonDir = path.join(root, moduleDir, slug);
+    if (fs.existsSync(lessonDir) && fs.statSync(lessonDir).isDirectory()) {
+      return lessonDir;
+    }
+  }
+  return null;
+}
+
+// Load the personalised markdown for a lesson, applying industry variant
+// preference and falling back gracefully:
+//   1) {lessonDir}/{industrySlug(profile.industry)}.md
+//   2) {lessonDir}/_source.md  (post-cohort-strip default)
+//   3) legacy content/lessons/{module}/{slug}.md
+// Then run token substitution against the profile.
+export function loadPersonalisedLesson(slug: string, profile: PersonalisationProfile | null): string | null {
+  const personalisedDir = findPersonalisedLessonDir(slug);
+  let md: string | null = null;
+
+  if (personalisedDir) {
+    const industry = industrySlug(profile?.industry ?? null);
+    md = tryReadFile(path.join(personalisedDir, `${industry}.md`));
+    if (!md) md = tryReadFile(path.join(personalisedDir, "_source.md"));
+  }
+
+  if (!md) {
+    // Legacy fallback path
+    for (const file of lessonFiles()) {
+      if (slugFromFile(file) === slug) {
+        md = tryReadFile(file);
+        if (md) break;
+      }
+    }
+  }
+
+  if (!md) return null;
+  return applyTokenSubstitution(md, profile);
+}
+
+// Token substitution — replaces {{tokenName}} placeholders with profile data
+// or sensible fallbacks. Operates on the raw markdown so substitutions land
+// in lesson body, code-fenced sample prompts, deliverable briefs, everywhere.
+//
+// Tokens supported:
+//   {{firstName}}        — profile.firstName (fallback: "there")
+//   {{businessName}}     — profile.businessName (fallback: "your business")
+//   {{weeklyTasks}}      — markdown bulleted list of profile.weeklyTasks
+//   {{goals}}            — comma-joined profile.goals
+//   {{brandVoice}}       — profile.brandVoice (fallback descriptive)
+//   {{productsServices}} — profile.productsServices (fallback descriptive)
+//   {{customerSnapshot}} — profile.customerSnapshot (fallback descriptive)
+//   {{recommendedLessonForModule:NN}} — looks up GOAL_TO_RECOMMENDED_LESSON
+export function applyTokenSubstitution(markdown: string, profile: PersonalisationProfile | null): string {
+  const p = profile ?? {};
+  let out = markdown;
+
+  const firstName = (p.firstName && p.firstName.trim()) || "there";
+  const businessName = (p.businessName && p.businessName.trim()) || "your business";
+  const weeklyTasks = Array.isArray(p.weeklyTasks) ? p.weeklyTasks.filter(t => typeof t === "string" && t.trim()) : [];
+  const weeklyTasksMd = weeklyTasks.length > 0
+    ? weeklyTasks.map(t => `- ${t.trim()}`).join("\n")
+    : "- any recurring task from your week";
+  const goals = Array.isArray(p.goals) ? p.goals.filter(g => typeof g === "string" && g.trim()) : [];
+  const goalsStr = goals.length > 0 ? goals.join(", ") : "your stated goal";
+  const brandVoice = (p.brandVoice && p.brandVoice.trim()) || "your brand voice (e.g. warm, direct, no jargon)";
+  const productsServices = (p.productsServices && p.productsServices.trim()) || "what you sell";
+  const customerSnapshot = (p.customerSnapshot && p.customerSnapshot.trim()) || "your typical customer";
+
+  out = out.replace(/\{\{firstName\}\}/g, firstName);
+  out = out.replace(/\{\{businessName\}\}/g, businessName);
+  out = out.replace(/\{\{weeklyTasks\}\}/g, weeklyTasksMd);
+  out = out.replace(/\{\{goals\}\}/g, goalsStr);
+  out = out.replace(/\{\{brandVoice\}\}/g, brandVoice);
+  out = out.replace(/\{\{productsServices\}\}/g, productsServices);
+  out = out.replace(/\{\{customerSnapshot\}\}/g, customerSnapshot);
+
+  // Module-targeted recommended-lesson token: {{recommendedLessonForModule:01}}
+  out = out.replace(/\{\{recommendedLessonForModule:(\d{2})\}\}/g, (_m, modNum: string) => {
+    const rec = recommendedLessonFor(goals, modNum);
+    if (rec) return `Since you're aiming for ${goalsStr}, the lesson in this module that pays this back hardest is ${rec}.`;
+    return "";
+  });
+
+  return out;
 }
