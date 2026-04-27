@@ -1,0 +1,309 @@
+# Lesson 1.2 — Write your first real prompt
+
+**Module:** 01 · Claude Essentials
+**Estimated time:** 25 minutes
+**Format:** Read + Practice + Graded deliverable
+
+## Pre-requisites
+- Lesson 1.1 — What Claude is, and what it isn't
+
+## Learning objectives
+By the end of this lesson you'll be able to:
+- Write a prompt that gives Claude enough context to produce a useful first draft
+- Identify the four components that make a prompt work: context, task, format, constraints
+- Recognise when a prompt is under-specified and know how to fix it
+- Evaluate Claude's output critically and revise using targeted follow-up instructions
+
+---
+
+## Lesson script
+
+### The difference between a test prompt and a real one
+
+Most people's first Claude prompt is a test. "Write me a quote follow-up email." "Give me some ideas for an Instagram post about my landscaping business." These are reasonable ways to check what the tool can do. They are not useful for work.
+
+A real prompt has a real job behind it. An actual quote you need to send tomorrow, a specific homeowner you're following up with, a real variation order you need to write up — with a specific recipient, a specific situation, and a specific idea of what "good" looks like. When you write a prompt like that, you stop testing Claude and start using it on the next thing you'd otherwise type out yourself between site visits.
+
+That's what this lesson is for, {{firstName}}. By the end you'll have written and submitted a real prompt for an actual task at {{businessName}}, seen what comes back, and understood why it worked or didn't.
+
+### The four things every useful prompt needs
+
+There's no magic formula. But most prompts that produce useful output contain four things. You don't always need all four — quick on-the-tools tasks can work with less — but the more of them you include, the closer the first response is to what you actually need.
+
+**Context.** Who you are, what {{businessName}} actually does (residential vs commercial, the trades you cover, your typical job size), and any relevant background about the specific situation. Claude doesn't know you. The context is what separates an output that could have been written for any sparkie or chippy from one that's actually useful for your business.
+
+**Task.** What you want Claude to do. Be specific about the action. "Write," "summarise," "extract," "compare," "draft," "rewrite" — all better than "help me with" or "do something about." One clear verb up front sets the direction for everything that follows.
+
+**Format.** What the output should look like. A bulleted scope of works. A professional email. A 3-paragraph variation summary. A table with two columns. A one-page customer-facing letter. If you don't specify, Claude picks a format — and it may not be the one that's useful when you're trying to send something straight from the ute.
+
+**Constraints.** What to include, exclude, or limit. A word count. A tone instruction. Specific points to cover. Things to leave out. These do the editing work before Claude writes a word — which matters when you're squeezing this in between jobs.
+
+Here's what this looks like in practice:
+
+```
+Without these four things:
+"Write a customer follow-up email."
+
+With them:
+"I run a 4-person residential electrical business in outer Brisbane.
+I need to send a follow-up email to a homeowner whose switchboard
+upgrade we completed last Friday. Job went smoothly, no defects, full
+compliance certificate issued. I'd like to gently mention that the
+ceiling-fan wiring she mentioned during the job is something we can
+quote on next month if she's still keen. The tone should be warm and
+professional — she's been great to deal with and referred her sister
+to us last year. Keep it under 200 words. End with my mobile if she
+wants to talk."
+```
+
+The second prompt takes about 30 seconds longer to write. The output is usable as-is. The first output needs rewriting.
+
+### Building a prompt from scratch, step by step
+
+If you're not sure where to start, work through these five steps. They take about a minute and prevent most of the common problems.
+
+**Step 1: Name the task.** Start with the action verb. Draft, summarise, extract, write, compare, explain, rewrite. One clear verb first — before any context or background.
+
+**Step 2: Add the context.** Who are you? What does {{businessName}} do? What's the specific situation this task relates to? Write it as if you're briefing a new apprentice on a job before they head out — capable but knows nothing about this customer or this site. One or two sentences is usually enough.
+
+**Step 3: Describe the output you need.** What does done look like? A 200-word email? A bulleted list of materials? A formal one-page variation notice? A casual SMS to a regular customer? Tell Claude what shape the answer should take.
+
+**Step 4: Add your constraints.** Tone, length, what to include, what to leave out, the audience who'll read it (homeowner, builder, strata manager, council inspector). At least one constraint makes the output usable. Two or three makes it close to right on the first attempt.
+
+**Step 5: Read it back.** Before you send, read the prompt as if you're the one receiving the brief. Would you know what to produce? If there's something you'd need to ask, add it to the prompt.
+
+This isn't a rigid formula — some steps aren't needed for simple tasks. But for anything going to a customer, a builder you want to keep working with, or a quote that's worth real money, that minute upfront saves five minutes of editing later — and your evenings back.
+
+### A note on format — the most skipped component
+
+Of the four components, format is the one people skip most often. They write the context and the task and add a constraint or two, but leave out what the output should actually look like.
+
+This matters more than it seems. If you don't specify a format, Claude will choose one — and it will usually choose something reasonable. But "reasonable" and "what you actually need" are different things. A list when you needed a customer-facing paragraph. A formal letter when you needed a quick SMS. Three pages when you needed a one-pager the homeowner could actually read.
+
+Format instructions can be short. "Bulleted list, no more than ten points." "Customer-facing email, under 200 words." "Three short paragraphs, plain language — no electrical jargon." "A table with two columns: line item and labour hours." One sentence on format can save five minutes of reformatting the output into the shape you needed.
+
+If you're sending something straight to a customer or pasting it into a quote you don't have time to redo, be explicit about format before Claude writes a word. It's the fastest way to get something usable on the first attempt.
+
+### Why "be more specific" is hard — and what to do about it
+
+"Be specific" is easy advice and hard to act on when you're staring at a blank text box at 7pm after a long day on site. Here's a question that helps: if you were briefing a capable but new admin staffer on this task, what would you need to tell them to make sure they got it right?
+
+The answer to that question is your prompt. The context you'd give a competent new hire — who you are, what kind of customer this is, what the job involved, what you want said and what you don't want said — is exactly what Claude needs. Claude is not a mind-reader. It is, however, very good at following clear instructions — because it doesn't get tired, distracted, or reluctant to ask clarifying questions at 7pm.
+
+One more way to test your prompt before you send it: read it back as if you're the one receiving the task. Would you know what to produce? Would you need to ask anything? If yes — add the answer to the prompt.
+
+### The write-read-revise loop
+
+You will not always get what you need on the first attempt. That's normal. A good prompt gets you 70–80% of the way there on the first try. The rest is revision.
+
+When you get a response that isn't quite right, the most common fix is to add more context or a more specific constraint — not to start over. You can say things like:
+
+- "That's close, but the tone is too formal for this customer. Rewrite it to sound more like a tradie who knows them, not a corporate letter."
+- "The structure is good but it's too long. Cut it to 150 words, keeping the three main points about the variation."
+- "The third paragraph isn't accurate — we haven't replaced the meter board yet, only quoted on it. Update that section."
+
+Claude holds the full conversation in memory for the whole session. You can refer to what it just wrote and give targeted revision instructions without restating the whole context. Just say what needs to change.
+
+Where people go wrong in revision is making the instruction too vague. "Make it better" gives Claude nothing to work with. Better in what way — tone, structure, length, accuracy? Name the specific thing that isn't working.
+
+Think of revision as a short second brief, not a reaction. You're not just expressing dissatisfaction — you're giving Claude the additional information it needed but didn't have the first time. Most outputs that aren't quite right can be fixed in one revision round if the revision instruction is specific. If you find yourself on the third or fourth revision and still not getting there, the fix is usually to go back to the original prompt and add more context — not to keep layering instructions on top of each other.
+
+### Common mistake → better approach
+
+**Mistake:** "Write me a Facebook post about my plumbing business."
+
+Claude produces something generic — a paragraph about reliable service and quality workmanship, maybe an aspirational sign-off. It's technically publishable. It's also something no homeowner will read twice or share.
+
+**Better approach:** "I run a residential plumbing business on the Sunshine Coast that handles a lot of older Queenslander renovations. I want to write a Facebook post about a real situation: a customer rang me last week panicking about a slow leak under her house she thought was going to cost thousands — turned out to be a degraded rubber washer on an old gate valve, fixed in 20 minutes for the call-out fee. I want homeowners in older houses to think 'I should call before assuming the worst.' Conversational, not formal — like I'm telling another local at the bowls club. Around 150 words. No hashtags — I want it to read like a story, not a marketing post."
+
+That prompt produces something worth posting. The extra specificity — the real story, the real audience, the specific tone instruction, the format constraint, the explicit no-hashtags — does the work that editing would otherwise have to do.
+
+---
+
+## Worked examples
+<!-- industry-personalisation
+{
+  "mode": "industry-personalised",
+  "default_index": 4,
+  "mapping": {
+    "Creative & Marketing": 1,
+    "SaaS / Software": 5,
+    "Professional Services": 1,
+    "Trades & Construction": 0,
+    "Property & Real Estate": 3,
+    "Finance & Accounting": 4,
+    "E-commerce & Retail": 4,
+    "Health & Wellness": 2,
+    "Education & Coaching": 6,
+    "Trades & Services": 0,
+    "Other": 4
+  }
+}
+-->
+At runtime, the platform shows ONE example below — the one matching the learner's industry. The other examples are removed from the page. If the learner has no industry set or "Other", the example at `default_index` is shown.
+
+### Example 1: Follow-up email for a trades business
+
+**Scenario:** Plumbing business · Follow-up email after a job with a soft upsell
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** All four components are present. The context is specific (Melbourne plumbing business, residential client, real situation). The task is clear (write a follow-up email). The format is defined (under 180 words, professional but friendly). The constraint is explicit (helpful, not pushy — plus the actual price range to include).
+
+---
+
+### Example 2: Meeting agenda for a consultant
+
+**Scenario:** Management consultant · Structured agenda for a first client discovery meeting
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The context (consultant, logistics client, specific problem) is concrete. The format instruction (90-minute agenda, specific time blocks) does the structural work before Claude writes a word. The constraint ("no buzzwords") ensures the output matches how this consultant actually works with clients.
+
+---
+
+### Example 3: Internal policy document for a health practice
+
+**Scenario:** Dental clinic · One-page internal policy document for admin staff
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The explicit channel breakdown (SMS, phone, email) gives Claude operational detail that would otherwise require guessing. The three-part structure instruction (channel, template, escalation) shapes the output before a word is written. The audience note (admin, not clinical) calibrates the language level.
+
+---
+
+### Example 4: Revising an output that's almost right
+
+**Scenario:** Real estate agency · Revising a draft that's almost right
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The revision is targeted. It quotes the specific problem phrases ("perfect for families," "don't miss this opportunity"), names the fix (real person, not agent copy), and keeps the constraint (same length). Claude can improve the draft without starting over because the instruction is precise about what's wrong.
+
+---
+
+### Example 5: Summarising a document for a decision
+
+**Scenario:** Small business owner · Summarising a supplier proposal for a decision
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The audience context ("time-poor business partner, 2 minutes") shapes how Claude pitches the summary — concise and decision-ready, not comprehensive. The explicit extraction list (pricing, MOQs, lead times, lock-ins, red flags) means Claude knows exactly what matters. Pasting the source document directly into the prompt is one of the most useful everyday patterns — Claude reads the whole thing so you don't have to explain it.
+
+---
+
+### Example 6: Writing a genuine check-in to a paying customer whose usage has dropped off
+
+**Scenario:** QuoteRail (3-person plumbing-quoting SaaS, Brisbane) · Churn check-in email to a paying customer who's gone quiet
+
+**Prompt:**
+```
+You are a customer success writer for a small Australian SaaS company. The tone is plain, friendly and Australian — never American-sounding "we value you" language.
+      
+      Context: QuoteRail is a $79/month quoting tool used by plumbing businesses. Marcus owns Reed Plumbing in Ipswich, has been a customer for 8 months, and used to send 30-40 quotes a month through us. In the last 3 weeks his quote volume has dropped to 4. His subscription renews in 11 days. I (Priya, the founder) want to email him personally — not a templated win-back. I want to ask if something's changed, offer a 15-minute call, and make it easy for him to tell me if he's leaving.
+      
+      Task: Write the email.
+      
+      Format:
+      - Subject line (under 8 words)
+      - Body: 90-130 words, 3 short paragraphs
+      - Signed "Priya"
+      - No discount offer, no "we noticed" corporate phrasing
+      - One specific question he can answer in one line if he's busy
+```
+
+**Why it works:** This prompt has all four components — Role (AU SaaS customer success writer), Context (customer name, subscription value, usage drop, renewal timing), Task (write the email), and Format (subject length, word count, paragraph count, signature, one specific question). The Format section is doing the heavy lifting: without "no discount offer" and "one specific question", you'd get a generic win-back template instead of something Priya could actually send.
+
+---
+
+### Example 7: Building a Term 2 welcome-back email from scratch using all four components
+
+**Scenario:** Tutoring business (Adelaide, 6 tutors) · Term 2 welcome-back email to existing families
+
+**Prompt:**
+```
+You are writing for a small private tutoring business — warm, organised, parent-to-parent in tone. Not corporate, not chirpy.
+      
+      Context: Bright Spark Tutoring runs Year 5-12 maths and English tutoring in Adelaide's eastern suburbs. Term 2 starts Monday 28 April. We have 47 families continuing from Term 1 and I'm writing to all of them. Three things have changed this term: (1) Tuesday 4pm slot is now full so new sessions need to move, (2) we've added a Year 12 maths exam-prep group on Saturday mornings, (3) invoices now come from a new email address (accounts@brightsparktutoring.com.au) so they don't get filtered.
+      
+      Task: Draft the welcome-back email.
+      
+      Format:
+      - Subject line
+      - Greeting that uses [Parent first name] as a placeholder
+      - 4 short sections with bold mini-headings: Term 2 dates, Schedule changes, New Year 12 group, Billing note
+      - Closes with a single clear action: reply to confirm their child's session times
+      - Total length: 180-220 words
+      - Sign off from "Hannah and the Bright Spark team"
+```
+
+**Why it works:** This is the lesson's core move — building a real prompt step by step. Notice how Format is the most-loaded section: bold mini-headings, word count, a placeholder convention, and one specific call-to-action. Skip any of those and you'd get a wall of text. The Context also gives Claude the three actual changes to mention, so the email isn't generic Term 2 filler.
+
+---
+
+## Graded deliverable
+
+**Title:** Your first real prompt
+
+**Brief:** Pick one real task from your work — something you need to write, draft, summarise, or produce this week, ideally one that touches what you actually sell and the customers you sell to. Not a test prompt, not a hypothetical. Write the prompt using what you've learned — open it with a sentence or two describing what your business sells (the product or service) and the kind of customer this piece of work is for, so Claude has the grounding to produce something usable. Then send it to Claude and submit all three things below: your prompt, Claude's response in full, and a short reflection.
+
+**What to submit:**
+
+1. **The prompt you sent to Claude** — Copy-paste exactly what you typed into Claude.ai. Make sure the opening of the prompt covers what your business sells (your main products or services) and the kind of customer this task is for — that's the context Claude needs to land the response.
+
+2. **Claude's full response** — Do not summarise — paste it in full.
+
+3. **Your reflection (100–150 words)** — Reflect on what worked, what didn't, and whether this is worth doing with Claude regularly.
+
+**Where to submit:** Paste your submission into the Submission box at the bottom of this lesson on the Claude Mastery platform. The AI grading engine returns your grade card within 60 seconds.
+
+**Pass mark:** 70 / 100. If you score below 70, the platform shows your grade card with feedback per criterion and activates a **Revise & Resubmit** button after a 24-hour cooldown.
+
+**Rubric (100 points total — pass at 70):**
+- **Specificity (25 pts)** — The prompt includes actual business context: who the student is, what their business does, and the specific situation behind the task. A prompt grounded in a named, real situation scores highest.
+- **Structure (25 pts)** — The prompt contains a clear task instruction, a format instruction, and at least one constraint, with logical flow from context to request.
+- **Constraint clarity (25 pts)** — Constraints are specific and actionable: a word count, a named tone, a list of things to include or exclude, a described audience. "Keep it professional" alone is not a constraint.
+- **Outcome focus (25 pts)** — The reflection evaluates the output critically — names what worked AND what didn't, and reaches a genuine view on whether this task is a good fit for Claude.
+
+---
+
+## Notes for the AI grading engine
+
+These notes are read by the grading engine when scoring submissions for this lesson. They are not shown to the student.
+
+- **Reward (high marks):**
+  - Prompt names a real business task with enough detail that the grader can picture the student's actual work — industry, client type, specific situation
+  - Prompt contains all four components: context, task, format, at least one concrete constraint
+  - Constraints go beyond vague adjectives — specific parameters like a word count, named tone, a list of required elements, or explicit exclusions
+  - Reflection names something specific that didn't work and explains what prompt change would fix it — not just "I'd be more specific next time"
+  - Reflection reaches a genuine verdict on whether the task suits Claude, with a reason
+
+- **Penalise (dock points):**
+  - Prompt is generic or hypothetical — grounded in no real business ("write an email for a company" type prompts)
+  - No format instruction — the student hasn't told Claude what shape the output should take
+  - Constraints absent or too vague ("professional tone" with no further specification)
+  - Reflection is only praise with no critical evaluation of what the output did or didn't do
+  - Student paraphrases or summarises Claude's response instead of pasting it in full
+
+- **Common 60–69 patterns (near-pass):** The task is real and the context is present, but the prompt is missing either format or constraint instructions, so Claude's response is reasonable but generic in shape. Or the reflection is honest but stays at the surface — "the tone was a bit formal" without explaining what they'd change in the prompt to fix it. In feedback, quote the missing component back and show exactly where to add it in the prompt.
+
+- **Common 80+ patterns (excellent):** The prompt reads like a good written brief — someone reviewing it could start on the task immediately without asking a single question. The reflection is specific and evaluative: it names what worked (and why), names what fell short (and what prompt revision would fix it), and makes a clear call on the task's suitability for Claude. The student has clearly engaged with the output, not just checked a box.
+
+- **Feedback tone:** Direct, specific, and kind. Quote the student's own prompt or reflection when pointing out wins or fix points. If the prompt is under-specified, show exactly where to add context — not just "add more detail." Always end with one concrete next step: either the most useful revision to their prompt, or a specific task from their work to try in Lesson 1.3 — "Audit your current AI use."
+
+- **Resubmission gating:** If the student resubmits, compare their revised prompt against the original stored in the platform. If they added a format instruction or a concrete constraint where there was none before, name that improvement explicitly. If the reflection is more critical and specific than the first attempt, acknowledge the sharper thinking. If the revision is essentially the same prompt with a few extra words but no new components, say so directly and name the one thing still missing.
