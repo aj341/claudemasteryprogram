@@ -18,16 +18,16 @@ export const LESSON_1_1 = {
   ],
   passMark: 70,
   rubric: [
-    { name: "Specificity", points: 25, desc: "Names specific tools and describes concrete, observable differences. Applications describe named, specific tasks - not categories." },
-    { name: "Structure", points: 25, desc: "All three sections present and distinguishable. Logical flow from experience to observation to application. Each application stands on its own." },
-    { name: "Constraint clarity", points: 25, desc: "Grounded in your actual business, not generic scenarios. Applications realistic for your industry and role." },
-    { name: "Outcome focus", points: 25, desc: "Applications identify genuine business value, not demos. Shows awareness of any limitations you'd need to manage." }
+    { name: "Lesson grasp", points: 25, desc: "Section 1 shows you understood why Claude is good or not good at the things you picked — not just listing them. Reasoning ties back to how Claude works or how it's trained." },
+    { name: "Specificity", points: 25, desc: "Section 2 names specific tasks, not categories. \"Summarise the monthly client report I send first of each month\" beats \"help with documents.\"" },
+    { name: "Real context", points: 25, desc: "Section 2 is grounded in your actual business and role. Each task reads like it could only have come from someone doing your job — not a generic scenario." },
+    { name: "Prompt craft", points: 25, desc: "Section 3 actually demonstrates the precision principle: identifies who you are, the context, what you want, and what \"good\" looks like. Specific enough that Claude could produce something useful on the first try." }
   ],
   deliverableBrief: "You've just read how Claude works, what it does well, and where it falls short. Now write a reflection based on your own experience and your own business context. This is not a summary of what you read - it's your analysis, honest and grounded in your actual work.",
   deliverableSections: [
-    { num: 1, title: "Your current AI tool use", desc: "A brief description - which tools you've used, for what tasks, and an honest two-sentence assessment of how well they've worked for you.", hint: "2-4 sentences total." },
-    { num: 2, title: "How Claude differs from what you've used", desc: "A reflection drawing on both what you've read today and any direct testing you've done. Ground it in your specific work context.", hint: "250-400 words." },
-    { num: 3, title: "Three specific applications in your actual work", desc: "For each: name the specific task, the context in which you'd use it, and why you think Claude is suitable for it.", hint: "3 applications, 3-4 sentences each." }
+    { num: 1, title: "How Claude actually works", desc: "From the lesson, pick one thing Claude is genuinely good at and one thing it's not. In your own words, explain why each is on that list — what does it tell you about how Claude generates text or how Anthropic trained it?", hint: "80–120 words." },
+    { num: 2, title: "Three tasks in your work where Claude could earn its keep", desc: "For each: (a) name the specific task, (b) where it sits in your week, (c) which Claude strength from the lesson makes it suited. If a task touches one of Claude's limits (real-time info, accuracy-critical, high-stakes), name how you'd manage that.", hint: "3 tasks, 50–70 words each." },
+    { num: 3, title: "Your first precise prompt", desc: "The lesson says using Claude well is the skill of being precise about what you want. Pick one of your three tasks above and write the opening line you'd give Claude — including who you are, your context, what you want, and what \"good\" looks like.", hint: "60–100 words." }
   ]
 };
 

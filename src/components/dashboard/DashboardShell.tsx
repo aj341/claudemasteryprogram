@@ -383,10 +383,10 @@ export default function DashboardShell({
                 </div>
                 <div className="grade-rubric">
                   {(data.latestGrade?.rubric.length ? data.latestGrade.rubric : [
-                    { label: "Clarity of ask", score: 23, max: 25 },
-                    { label: "Context provided", score: 22, max: 25 },
-                    { label: "Constraints & format", score: 17, max: 25, tone: "warn" as const },
-                    { label: "Operator fluency", score: 22, max: 25 }
+                    { label: "Lesson grasp", score: 22, max: 25 },
+                    { label: "Specificity", score: 23, max: 25 },
+                    { label: "Real context", score: 17, max: 25, tone: "warn" as const },
+                    { label: "Prompt craft", score: 22, max: 25 }
                   ]).map((row) => {
                     const pct = (row.score / row.max) * 100;
                     return (

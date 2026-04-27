@@ -18,10 +18,10 @@ export type GradeResult = {
 };
 
 const RUBRIC_1_1 = [
-  { name: "Specificity", points: 25, desc: "Names specific tools and describes concrete, observable differences. Applications describe named, specific tasks - not categories." },
-  { name: "Structure", points: 25, desc: "All three sections present and distinguishable. Logical flow from experience to observation to application. Each application stands on its own." },
-  { name: "Constraint clarity", points: 25, desc: "Grounded in your actual business, not generic scenarios. Applications realistic for your industry and role." },
-  { name: "Outcome focus", points: 25, desc: "Applications identify genuine business value, not demos. Shows awareness of any limitations you'd need to manage." }
+  { name: "Lesson grasp", points: 25, desc: "Section 1 shows you understood why Claude is good or not good at the things you picked — not just listing them. Reasoning ties back to how Claude works or how it's trained." },
+  { name: "Specificity", points: 25, desc: "Section 2 names specific tasks, not categories. \"Summarise the monthly client report I send first of each month\" beats \"help with documents.\"" },
+  { name: "Real context", points: 25, desc: "Section 2 is grounded in your actual business and role. Each task reads like it could only have come from someone doing your job — not a generic scenario." },
+  { name: "Prompt craft", points: 25, desc: "Section 3 actually demonstrates the precision principle: identifies who you are, the context, what you want, and what \"good\" looks like. Specific enough that Claude could produce something useful on the first try." }
 ];
 
 function buildGradingPrompt(submission: string, learnerIndustry: string | null) {
@@ -30,9 +30,9 @@ function buildGradingPrompt(submission: string, learnerIndustry: string | null) 
 The student is enrolled in a 6-week course teaching Australian SMB owners and operators to use Claude effectively in their business. ${learnerIndustry ? `The student works in: ${learnerIndustry}.` : ""}
 
 The deliverable they were asked to submit has three sections:
-1. Their current AI tool use (which tools, for what tasks, honest assessment) - 2-4 sentences total.
-2. How Claude differs from what they've used - 250-400 words, grounded in their specific work.
-3. Three specific applications in their actual work - each names the task, context, and why Claude is suitable. 3-4 sentences each.
+1. How Claude actually works — pick one thing Claude is good at and one it's not, explain why each is on that list (ties back to how Claude works or how it was trained). 80–120 words.
+2. Three tasks in their work where Claude could earn its keep — each task names: (a) the specific task, (b) where it sits in their week, (c) which Claude strength makes it suited. If a task touches one of Claude's limits, they should name how they'd manage that. 50–70 words each.
+3. Their first precise prompt — for one of the three tasks, the opening line they'd give Claude: who they are, their context, what they want, what "good" looks like. 60–100 words.
 
 Grade against this 4-criteria rubric (25 points each, 100 total). Pass mark is 70.
 
@@ -44,16 +44,16 @@ Return ONLY a valid JSON object with this exact structure (no markdown, no comme
   "score_overall": <integer 0-100>,
   "feedback": "<2-3 sentence summary of what they did well and what to improve, addressed to the student in plain English>",
   "rubric": [
+    { "label": "Lesson grasp", "score": <0-25 integer> },
     { "label": "Specificity", "score": <0-25 integer> },
-    { "label": "Structure", "score": <0-25 integer> },
-    { "label": "Constraint clarity", "score": <0-25 integer> },
-    { "label": "Outcome focus", "score": <0-25 integer> }
+    { "label": "Real context", "score": <0-25 integer> },
+    { "label": "Prompt craft", "score": <0-25 integer> }
   ]
 }
 
 The four rubric scores must sum to score_overall.
 
-Be a generous-but-honest grader. If a section is missing entirely, dock that section's structure score severely. If applications are abstract categories ("use it for marketing") rather than named tasks ("draft the monthly newsletter to my 480 retail customers"), dock specificity. Reward concrete, business-grounded answers.
+Be a generous-but-honest grader. If a section is missing entirely, dock heavily. If section 1 just lists "Claude is good at writing" without explaining WHY (token-by-token generation, training on text, no live data, etc.), dock lesson grasp. If section 2 names abstract categories ("help with marketing") rather than named tasks ("draft the monthly newsletter to my 480 retail customers"), dock specificity. If section 3's prompt is generic ("write me an email") rather than precise (identifies them, their business, the audience, what good looks like), dock prompt craft. Reward concrete, business-grounded answers that show real understanding.
 
 ---STUDENT SUBMISSION BEGINS---
 ${submission}

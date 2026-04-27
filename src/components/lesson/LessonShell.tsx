@@ -412,7 +412,7 @@ export default function LessonShell({
                   className="submission-input"
                   value={submission}
                   onChange={e => setSubmission(e.target.value)}
-                  placeholder="Paste or type your three sections here.&#10;&#10;1. Your current AI tool use (2-4 sentences)&#10;&#10;2. How Claude differs from what you've used (250-400 words)&#10;&#10;3. Three specific applications in your actual work (3 applications, 3-4 sentences each)"
+                  placeholder="Paste or type your three sections here.&#10;&#10;1. How Claude actually works (80–120 words) — pick one strength and one limit, explain why each is what it is.&#10;&#10;2. Three tasks in your work where Claude could earn its keep (50–70 words each).&#10;&#10;3. Your first precise prompt (60–100 words) — for one of your three tasks: who you are, your context, what you want, what 'good' looks like."
                   disabled={pending}
                 />
                 <div className="submission-foot">
