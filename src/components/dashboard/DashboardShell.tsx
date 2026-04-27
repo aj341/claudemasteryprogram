@@ -20,11 +20,9 @@ const INDUSTRIES = [
 ];
 
 const LAUNCH_DATE = new Date("2026-06-01T09:00:00+10:00");
-function daysUntilLaunch() {
+const LAUNCH_DATE_STR = "Mon, 1 Jun"; // fixed string — avoids server/client locale/timezone hydration mismatch
+function computeDaysUntilLaunch() {
   return Math.max(0, Math.ceil((LAUNCH_DATE.getTime() - Date.now()) / 86400000));
-}
-function launchDateStr() {
-  return LAUNCH_DATE.toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" });
 }
 
 export default function DashboardShell({
@@ -39,7 +37,9 @@ export default function DashboardShell({
   const industry = data.industry || "your industry";
   const initials = firstName.slice(0, 2).toUpperCase();
   const cohort = data.enrolment?.cohort ?? "2026-06-01";
-  const days = daysUntilLaunch();
+  // Defer days calc to client to avoid hydration mismatch (server vs client clock).
+  const [days, setDays] = useState(0);
+  useEffect(() => { setDays(computeDaysUntilLaunch()); }, []);
 
   // Progress
   const totalLessons = 34;
@@ -135,9 +135,9 @@ export default function DashboardShell({
               <span data-state="day1-inline">Welcome, {firstName}.</span>
               <span data-state="week2-inline">Good to see you back, {firstName}.</span>
             </h1>
-            <p data-state="day1">
+            <p data-state="day1" suppressHydrationWarning>
               {days > 0
-                ? `Lesson 1.1 lands ${launchDateStr()} 9:00 AEST. Set your profile below and the course tunes itself to your industry from day one.`
+                ? `Lesson 1.1 lands ${LAUNCH_DATE_STR} 9:00 AEST. Set your profile below and the course tunes itself to your industry from day one.`
                 : "Your cohort is live. Lesson 1.1 is ready below."}
             </p>
             <p data-state="week2">
@@ -311,9 +311,9 @@ export default function DashboardShell({
                   <span className="badge badge-warn"><span className="badge-dot" />1 short form · 2 min</span>
                 </div>
                 <div className="continue-title">Tell us who you are. The course tunes itself around it.</div>
-                <div className="continue-sub">Lesson 1.1 lands {launchDateStr()} 9:00 AEST. The more you give the profile above, the more every prompt, example, and graded deliverable speaks to your industry instead of a generic learner.</div>
+                <div className="continue-sub" suppressHydrationWarning>Lesson 1.1 lands {LAUNCH_DATE_STR} 9:00 AEST. The more you give the profile above, the more every prompt, example, and graded deliverable speaks to your industry instead of a generic learner.</div>
                 <div className="continue-meta">
-                  <div className="continue-meta-item"><span className="continue-meta-label">Course opens</span><span className="continue-meta-value">{launchDateStr()} · 9:00 AEST</span></div>
+                  <div className="continue-meta-item"><span className="continue-meta-label">Course opens</span><span className="continue-meta-value">{LAUNCH_DATE_STR} · 9:00 AEST</span></div>
                   <div className="continue-meta-item"><span className="continue-meta-label">Tier</span><span className="continue-meta-value">{data.enrolment?.tier ? `${data.enrolment.tier.charAt(0).toUpperCase()}${data.enrolment.tier.slice(1)} · enrolled` : "Pre-sale"}</span></div>
                   <div className="continue-meta-item"><span className="continue-meta-label">Graded by</span><span className="continue-meta-value">Claude · 4-criteria rubric</span></div>
                 </div>
@@ -474,7 +474,7 @@ export default function DashboardShell({
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
                 <span data-state="week2-inline">Locked · 4 modules to go</span>
-                <span data-state="day1-inline">Locked · starts {days > 0 ? `${days} day${days === 1 ? "" : "s"} from now` : "today"}</span>
+                <span data-state="day1-inline" suppressHydrationWarning>Locked · starts {days > 0 ? `${days} day${days === 1 ? "" : "s"} from now` : "today"}</span>
               </div>
             </div>
 
