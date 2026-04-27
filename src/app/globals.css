@@ -510,3 +510,57 @@ a:hover { text-decoration: underline; }
 .grade-big-num { font-size: 3rem; font-weight: 900; line-height: 1; color: var(--text); font-feature-settings: "tnum"; }
 .grade-big-denom { font-size: 1.2rem; font-weight: 700; color: var(--text-muted); }
 .grade-display-feedback { font-size: 0.95rem; color: var(--text-body); line-height: 1.65; padding: 16px 18px; background: var(--bg-alt); border-radius: var(--radius-md); margin-bottom: 24px; }
+
+/* =====================================================================
+   READING FRAME / EBOOK
+   ===================================================================== */
+.reading-frame { position: relative; margin-bottom: 56px; padding: clamp(24px, 5vw, 48px); background: radial-gradient(circle at top left, rgba(59,185,245,0.08), transparent 28%), linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--paper) 84%, var(--paper-strong)) 100%); border: 1px solid var(--paper-rule); border-radius: 32px; box-shadow: 0 28px 60px var(--paper-shadow); overflow: hidden; }
+.reading-frame::before { content: ''; position: absolute; inset: 14px; border: 1px solid color-mix(in srgb, var(--paper-rule) 65%, transparent); border-radius: 24px; pointer-events: none; }
+@media (max-width: 760px) { .reading-frame { padding: 18px; border-radius: 22px; } .reading-frame::before { inset: 8px; border-radius: 16px; } }
+.reading-frame-meta { position: relative; display: flex; align-items: center; gap: 14px; margin-bottom: 24px; color: var(--text-muted); z-index: 1; }
+.reading-frame-chip, .reading-frame-page { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; }
+.reading-frame-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--paper-rule), transparent); }
+
+.ebook-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
+.ebook-toolbar-copy { display: flex; flex-direction: column; gap: 6px; }
+.ebook-toolbar-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: var(--blue-dark); }
+.ebook-toolbar-sub { font-size: 0.9rem; color: var(--text-muted); line-height: 1.55; max-width: 460px; }
+.ebook-controls { display: flex; align-items: center; gap: 10px; }
+.ebook-page-status { min-width: 124px; text-align: center; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-feature-settings: "tnum"; }
+.ebook-nav-btn { width: 42px; height: 42px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--paper-rule) 90%, transparent); background: color-mix(in srgb, var(--paper) 90%, var(--surface)); color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform var(--duration-base) var(--ease), background var(--duration-base) var(--ease); box-shadow: 0 10px 24px rgba(15,22,35,0.08); font-family: inherit; }
+.ebook-nav-btn:hover:not(:disabled) { transform: translateY(-1px); background: color-mix(in srgb, var(--blue-pale) 55%, var(--paper)); }
+.ebook-nav-btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+.ebook-book { position: relative; max-width: min(760px, 100%); margin: 0 auto; }
+.ebook-stage { position: relative; min-height: 600px; }
+@media (max-width: 760px) { .ebook-stage { min-height: 500px; } }
+
+.ebook-page { position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 600px; padding: 34px 36px 28px; border-radius: 30px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.45), transparent 18%), linear-gradient(180deg, color-mix(in srgb, var(--paper) 98%, white) 0%, color-mix(in srgb, var(--paper) 86%, var(--paper-strong)) 100%); border: 1px solid color-mix(in srgb, var(--paper-rule) 88%, transparent); box-shadow: 0 34px 78px rgba(15,22,35,0.18), 0 10px 26px rgba(15,22,35,0.09); animation: pageFadeIn 320ms var(--ease); }
+@media (max-width: 760px) { .ebook-page { padding: 24px 22px 20px; border-radius: 22px; min-height: 500px; } }
+.ebook-page::after { content: ''; position: absolute; inset: 14px; border: 1px solid color-mix(in srgb, var(--paper-rule) 65%, transparent); border-radius: 18px; pointer-events: none; }
+@media (max-width: 760px) { .ebook-page::after { inset: 10px; border-radius: 14px; } }
+@keyframes pageFadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+.ebook-page.is-prev { animation-name: pageFadeInPrev; }
+@keyframes pageFadeInPrev { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+.ebook-page-head { display: flex; flex-direction: column; gap: 6px; padding-bottom: 18px; margin-bottom: 22px; border-bottom: 1px solid color-mix(in srgb, var(--paper-rule) 85%, transparent); position: relative; z-index: 1; }
+.ebook-page-kicker { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.18em; color: var(--blue-dark); }
+.ebook-page-title { font-family: var(--font-display); font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1.05; letter-spacing: -0.03em; color: var(--text); font-weight: 600; }
+.ebook-page-body { flex: 1; min-width: 0; position: relative; z-index: 1; font-family: var(--font-copy); }
+.ebook-page-body p { font-size: 1rem; color: var(--text-body); line-height: 1.75; margin-bottom: 14px; }
+.ebook-page-body h3 { font-family: var(--font); font-size: 1.05rem; font-weight: 700; color: var(--text); margin: 22px 0 8px; }
+.ebook-page-body ul, .ebook-page-body ol { margin: 12px 0; padding-left: 22px; line-height: 1.7; }
+.ebook-page-body li { margin-bottom: 4px; color: var(--text-body); }
+.ebook-page-body strong { color: var(--text); font-weight: 700; }
+.ebook-page-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; margin-top: 18px; border-top: 1px solid color-mix(in srgb, var(--paper-rule) 65%, transparent); font-size: 0.72rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.04em; position: relative; z-index: 1; }
+
+.ebook-progress { display: flex; gap: 8px; justify-content: center; margin-top: 18px; flex-wrap: wrap; position: relative; z-index: 1; }
+.ebook-progress-dot { width: 8px; height: 8px; border-radius: 50%; background: color-mix(in srgb, var(--paper-rule) 70%, transparent); border: none; padding: 0; cursor: pointer; transition: all var(--duration-base) var(--ease); }
+.ebook-progress-dot.active { background: var(--blue); transform: scale(1.4); }
+.ebook-progress-dot:hover:not(.active) { background: var(--text-muted); }
+
+.ebook-callout { background: linear-gradient(135deg, var(--blue-pale) 0%, rgba(59,185,245,0.04) 100%); border: 1px solid rgba(59,185,245,0.25); border-radius: 14px; padding: 18px 22px; margin-top: 18px; }
+.ebook-callout .callout-kicker { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--blue-dark); margin-bottom: 12px; }
+.ebook-callout .callout-block { margin-bottom: 10px; }
+.ebook-callout .callout-block:last-child { margin-bottom: 0; }
+.ebook-callout .callout-block-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 4px; }
+.ebook-callout .callout-block-text { font-size: 0.92rem; color: var(--text-body); line-height: 1.55; }

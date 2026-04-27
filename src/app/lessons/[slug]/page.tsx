@@ -3,7 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { db } from "@/db";
 import { profiles, lessonSubmissions, grades } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
-import { LESSON_1_1, Lesson1_1Body } from "@/lib/lessons/1-1-content";
+import { LESSON_1_1, LESSON_1_1_PAGES } from "@/lib/lessons/1-1-content";
 import LessonShell from "@/components/lesson/LessonShell";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -65,7 +65,7 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
   return (
     <LessonShell
       lesson={LESSON_1_1}
-      lessonBody={<Lesson1_1Body />}
+      lessonPages={LESSON_1_1_PAGES}
       learner={{
         firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
         email: session.user.email!,

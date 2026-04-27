@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from "react";
+import type { LessonPage } from "@/lib/lessons/1-1-content";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { submitAndGradeLesson1_1, type GradeResult } from "@/lib/grading-actions";
@@ -56,13 +57,13 @@ const MIN_CHARS = 600;
 
 export default function LessonShell({
   lesson,
-  lessonBody,
+  lessonPages,
   learner,
   priorSubmission,
   priorGrade
 }: {
   lesson: Lesson;
-  lessonBody: ReactNode;
+  lessonPages: LessonPage[];
   learner: Learner;
   priorSubmission: string | null;
   priorGrade: { score: number; feedback: string; rubric: { label: string; score: number; max: number; tone?: "warn" | "danger" }[] } | null;
@@ -74,6 +75,21 @@ export default function LessonShell({
   const [error, setError] = useState<string | null>(null);
   const [readingPct, setReadingPct] = useState(0);
   const [openModule, setOpenModule] = useState("01");
+  const [pageIdx, setPageIdx] = useState(0);
+  const [pageDir, setPageDir] = useState<"next" | "prev">("next");
+  const totalPages = lessonPages.length;
+  const currentPage = lessonPages[pageIdx];
+  function goToPage(idx: number) {
+    if (idx < 0 || idx >= totalPages) return;
+    setPageDir(idx > pageIdx ? "next" : "prev");
+    setPageIdx(idx);
+    // Smooth-scroll to keep ebook in view
+    const frame = document.querySelector(".reading-frame");
+    if (frame) {
+      const top = frame.getBoundingClientRect().top + window.scrollY - 80;
+      if (window.scrollY > top + 100) window.scrollTo({ top, behavior: "smooth" });
+    }
+  }
   const submissionRef = useRef<HTMLTextAreaElement>(null);
   const gradeRef = useRef<HTMLDivElement>(null);
 
@@ -236,8 +252,52 @@ export default function LessonShell({
             </ul>
           </div>
 
-          {/* BODY */}
-          {lessonBody}
+          {/* EBOOK READER */}
+          <section className="reading-frame">
+            <div className="reading-frame-meta">
+              <span className="reading-frame-chip">Flipbook Edition</span>
+              <span className="reading-frame-line" />
+              <span className="reading-frame-page">Page {pageIdx + 1}</span>
+            </div>
+
+            <div className="ebook-toolbar">
+              <div className="ebook-toolbar-copy">
+                <span className="ebook-toolbar-label">Turn the page</span>
+                <p className="ebook-toolbar-sub">Read this lesson in a paged book view. Use the arrows below.</p>
+              </div>
+              <div className="ebook-controls">
+                <button type="button" className="ebook-nav-btn" onClick={() => goToPage(pageIdx - 1)} disabled={pageIdx === 0} aria-label="Previous page">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+                </button>
+                <div className="ebook-page-status">Page {pageIdx + 1} of {totalPages}</div>
+                <button type="button" className="ebook-nav-btn" onClick={() => goToPage(pageIdx + 1)} disabled={pageIdx === totalPages - 1} aria-label="Next page">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                </button>
+              </div>
+            </div>
+
+            <div className="ebook-book">
+              <div className="ebook-stage">
+                <article key={pageIdx} className={`ebook-page${pageDir === "prev" ? " is-prev" : ""}`}>
+                  <div className="ebook-page-head">
+                    <div className="ebook-page-kicker">{currentPage.kicker}</div>
+                    <div className="ebook-page-title">{currentPage.title}</div>
+                  </div>
+                  <div className="ebook-page-body">{currentPage.body}</div>
+                  <div className="ebook-page-foot">
+                    <span>Claude Mastery</span>
+                    <span>Page {pageIdx + 1}</span>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div className="ebook-progress" aria-label="Page navigation">
+              {lessonPages.map((_, i) => (
+                <button key={i} type="button" className={`ebook-progress-dot${i === pageIdx ? " active" : ""}`} onClick={() => goToPage(i)} aria-label={`Go to page ${i + 1}`} />
+              ))}
+            </div>
+          </section>
 
           {/* WORKED EXAMPLES */}
           <div className="section-divider">
