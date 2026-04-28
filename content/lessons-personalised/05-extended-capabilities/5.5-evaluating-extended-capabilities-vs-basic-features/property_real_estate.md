@@ -1,0 +1,184 @@
+# Lesson 5.5 — Evaluating extended capabilities vs basic features
+
+**Module:** 05 · Extended Capabilities
+**Estimated time:** 20 minutes
+**Format:** Read + Practice + Graded deliverable
+
+## Pre-requisites
+
+- Modules 1, 2, 3, and 4 complete (all lessons)
+- Lessons 5.1, 5.2, 5.3, and 5.4 complete
+
+---
+
+## Learning objectives
+
+By the end of this lesson you'll be able to:
+
+- Describe the capability-complexity trade-off and why more advanced features are not automatically better
+- Apply a four-tier decision framework to match any task to the right Claude capability
+- Use the 3-question test to evaluate whether an extended capability is worth setting up for a specific task
+- Identify the most common over-engineering traps and how to avoid them
+- Audit your current Claude usage and make at least one change that improves your setup
+
+---
+
+## Lesson script
+
+### More capability is not always better
+
+Here is a belief that trips up a lot of people who've worked through this course: if Claude can do something more powerful, that's always the better option. Upload a file instead of pasting text. Build a Project instead of a standalone chat. Set up an automation instead of writing a prompt manually. More advanced means more effective, right?
+
+Not always. Every extended capability comes with a cost that doesn't appear on the Claude pricing page. That cost is complexity — the setup time, the things that can now break, the mental overhead of maintaining something, and the context requirements that need to be right before the feature even works as intended.
+
+A Project with a detailed system prompt and five uploaded reference documents — recent comparable sales, the agency's tone-of-voice guide, your standard listing authority, your vendor objection handling notes, your auction script — is more capable than a basic chat. It's also more things to maintain, more failure points, and more time to set up correctly. When that Project is serving a recurring workflow {{firstName}} runs three times a week — great investment. When it's for a task you do once a quarter — you've spent two hours of setup time on something a well-written prompt in a standard chat could have handled in three minutes.
+
+The question isn't "what's the most powerful tool available?" The question is "what's the right tool for this specific task?" Those are different questions, and confusing them wastes time and introduces friction you don't need.
+
+### The four-tier framework
+
+Think of Claude's capabilities in four tiers, each with a clear use case.
+
+**Tier 1 — Basic chat.** A single conversation, no setup, no uploads, no persistent memory. You open a chat, type a prompt, get a response, close it. This is the right tier for one-off tasks, quick questions, first drafts of things you'll refine yourself, and anything where the context fits in a single prompt. Most principals and PMs underestimate how much they can get done at this tier with a well-crafted prompt.
+
+**Tier 2 — Project + knowledge base.** A named Project with a system prompt and one or more uploaded reference documents. The right tier for recurring workflows where you always need the same context — your tone of voice, your service list, your vendor advocate process, your standard auction packaging. The system prompt carries the standing instructions so you don't have to restate them every conversation.
+
+**Tier 3 — File and vision processing.** Uploading documents, images, or screenshots into a conversation so Claude can read, analyse, or extract from them. The right tier when the task requires Claude to engage with content that doesn't fit neatly into a typed prompt — a competitor's listing PDF, a tradie's invoice, a photo of a whiteboard from a sales meeting.
+
+**Tier 4 — API and automation.** Claude triggered by events rather than by you. An appraisal request arrives, an automation sends it to Claude, Claude drafts a response, the response goes somewhere — without you sitting there. The right tier for tasks {{businessName}} has already done manually many times, knows work, and wants to stop repeating.
+
+Each tier up adds setup time and complexity. Each tier up is only worth that cost if the task genuinely needs what the higher tier provides. Most tasks — probably more than you think — belong in Tier 1 or Tier 2.
+
+### The 3-question test
+
+Before you reach for an extended capability, run this test. Three questions. If you can't answer yes to all three, stay at the simpler tier.
+
+**Question 1: Does it save more than 30 minutes a week?**
+
+Calculate the real number. If uploading and processing a contract saves you ten minutes and you do it twice a week, that's twenty minutes. Not above the threshold — at least not enough to justify significant setup time. If you're responding to fifteen appraisal requests a week and a good automation saves you twelve minutes per response, that's three hours. Well above the threshold. The time saving has to be real and recurring, not theoretical and occasional.
+
+**Question 2: Would a basic prompt achieve 80% of this?**
+
+This is the hardest question to answer honestly. It requires you to actually try the simpler approach before concluding you need the more complex one. Many principals skip straight to building a Project or setting up an automation because they assume a basic prompt won't be good enough. Often a properly structured Tier 1 prompt — with a role, a clear task, a format, and a length constraint — gets you to 80% of what the complex setup produces. If 80% is enough for this task, the complex setup is overhead you don't need.
+
+**Question 3: Will you use this more than once a month?**
+
+Frequency determines whether setup cost is worth paying. A Project you open three times a week amortises its setup cost quickly. A Project you open twice a year does not — and you'll spend more time remembering how it's configured than you'll save by having it. If the answer to this question is "less than monthly," that's a signal to use a well-written reusable prompt template instead, not a persistent setup with moving parts.
+
+If the task clears all three — saves more than 30 minutes a week, a basic prompt won't get you to 80%, and you'll use it more than monthly — the extended capability is worth building. If it fails any one of them, stay simpler.
+
+### Common traps: where over-engineering happens
+
+Most over-engineering in Claude setups follows a few repeating patterns. Recognising them saves you time and frustration.
+
+**Using vision when text would do.** A sales rep takes a screenshot of a contract page, uploads it as an image, and asks Claude to read and summarise it. This works — but Claude is reading pixels and reconstructing text. If the contract exists as a copyable PDF, copying and pasting the relevant clause is faster and produces a more accurate result. Vision is valuable when the document genuinely only exists as an image — a scanned condition report, a photographed signage, a window-card screenshot. It's overhead when it doesn't.
+
+**Common mistake → Better approach**
+
+A BDM receives a vendor's previous contract as a PDF. She screenshots the special conditions table and uploads the image so Claude can extract the figures. Claude reads the image, but misreads two numbers — "8" looks like "B" at that resolution and the deposit figure ends up wrong.
+
+The better approach: open the PDF, select and copy the special conditions text, paste it directly into the chat. If the PDF is a scanned image and not selectable, the image upload is the right call. If the text is selectable, use it. The rule: prefer machine-readable text over images when you have the choice — especially when figures matter.
+
+**Uploading a PDF when pasting the key section is faster.** This is a subtle version of the same trap. You have a 60-page strata report, and you want Claude to review the special by-laws. You upload the whole PDF. Claude processes 60 pages to find the two pages you need. The faster and more precise approach: open the report, navigate to the special by-laws section, copy those three pages, paste them into the chat with your question. You get a sharper answer because Claude isn't parsing irrelevant content. You get it faster because you're not waiting on a file upload.
+
+The principle: give Claude exactly what it needs for the task, not everything that's tangentially related.
+
+**Building an automation when a template prompt is good enough.** Automations are powerful, but they're also the highest-complexity tier. They require setup, testing, maintenance, and a no-code tool subscription. Before you invest that, ask: could a well-designed prompt template — one you paste into a Tier 1 chat and fill in manually each time — produce the same vendor update in two minutes instead of thirty? For a task you do twice a week, that's four minutes spent versus a weekend spent building and debugging an automation. If the manual version with a template prompt takes less than five minutes per run, the automation case is weak unless the volume is very high.
+
+**Treating a Project as the default for everything.** Projects are useful. But they're not the right container for every task. If you're using a Project for a one-off task — drafting a single press release for a record-breaking auction result, writing a one-off proposal for an unusual mixed-use listing — the Project structure is overhead you didn't need. Open a standard chat, write a thorough prompt, get the output, close it. Save Projects for recurring workflows with consistent context requirements — your weekly vendor updates, your monthly owner reports, your standard listing copy generation.
+
+### Auditing your own Claude setup
+
+The final skill this module builds is the ability to look at your actual Claude usage — not hypothetical use cases — and ask honestly: am I using the right tool for each job?
+
+Pull up Claude and look at your recent conversations and any Projects you've built. For each recurring thing you use Claude for, ask yourself:
+
+- What tier am I using?
+- Does this task actually need that tier, or am I over-engineering out of habit?
+- If I'm under-engineering — if I'm doing the same contextual setup manually every time in a basic chat — would a Project or a template prompt save me meaningful time?
+
+The audit goes both ways. Over-engineering (using a complex setup for a simple task) wastes setup time and adds maintenance burden. Under-engineering (typing the same agency context, tone notes, and listing template into every chat because you haven't set up a Project) wastes repetitive effort you've already done.
+
+The goal is a setup where the tier matches the task. Simple tasks in basic chat. Recurring context-heavy tasks like vendor updates in Projects. Document-heavy tasks like contract review using file or vision input. High-volume repetitive tasks like appraisal-request responses in automations — once they're truly ready for it.
+
+You won't get this perfectly right on the first pass. Most people find at least one thing in their audit that belongs at a different tier. That's not a failure — that's the point of auditing. The value is in the correction.
+
+A useful way to do the audit: for each task you use Claude for regularly, write down the tier you're using and the tier that seems like the right fit after running the 3-question test. If they match, you're calibrated. If they don't, you've found a change worth making.
+
+This lesson's deliverable asks you to do exactly that — three tasks, real and current, each evaluated against the framework. One of those evaluations becomes a change you make now, not eventually.
+
+---
+
+## Worked examples
+
+The four-tier framework comparison table below replaces the previous worked examples — it teaches the comparison directly.
+
+| Tier | Best for | Avoid when | Common trap |
+|---|---|---|---|
+| **Tier 1** — Basic chat | One-off questions, quick rewrites, throwaway drafts. Tasks that change every time and don't need standing context. | You're repeatedly typing the same context across sessions, or output quality jumps when you paste in a context document. | *Under-engineering:* typing the same business background into a fresh chat every day instead of moving the task into a Project. |
+| **Tier 2** — Project | Recurring tasks where the same context, voice, or constraints apply. Used more than monthly. Setup pays back inside a few uses. | The task changes substantially every run, or the "standing context" is really just one document you'd paste in anyway. | *Over-engineering:* building a Project for a task you only do twice a year — setup time exceeds time saved. |
+| **Tier 3** — Targeted feature (vision, files, web) | Document-heavy or image-heavy tasks: extracting fields from a contract, reading a screenshot, summarising a 30-page report. Use the feature for the section that needs it, not the whole task. | The same job could be done by pasting plain text. The feature adds friction, not capability. | *Over-engineering:* uploading a PDF when copying the relevant 4 paragraphs would have been faster and given a better answer. |
+| **Tier 4** — Automation / API | High-volume, repeated, predictable tasks where you've done the same thing manually enough times to know exactly what "good" looks like. The 3-question test all says yes. | You haven't done the task manually 10+ times yet, the inputs vary widely, or you can't articulate the success criteria clearly. | *Over-engineering:* reaching for automation before you've proved the workflow manually. Automating a broken process scales the breakage. |
+
+
+The most common mistakes are **under-engineering at Tier 1** (retyping context daily that should live in a Project) and **over-engineering at Tier 4** (automating before the manual workflow is proven). The deliverable below asks you to spot one of each in your own setup.
+
+---
+
+## Graded deliverable
+
+**Title:** Audit three tasks — pick the right tier for each
+
+**Brief:** Identify three real tasks where you use, have recently used, or could realistically use Claude. For each one, name the current tier (or "not yet using Claude on this" with the tier you'd expect to start at), the recommended tier (with the 3-question test answered), and the change or starting point you'll make. Then pick the most impactful of those three and demonstrate it — run the updated prompt through Claude and paste the response. Finish with an 80-word reflection on the pattern this audit exposed (over-engineering, under-engineering, ready/not-ready, etc.).
+
+**What to submit:**
+
+1. **Three task audit entries** — For each of three real tasks, list: the task (specific enough to picture), current tier (Tier 1 / 2 / 3 / 4 — one sentence on how you use it; or "not yet using Claude on this" if you've identified the task but haven't started), recommended tier with the 3-question test answered (saves more than 30 min/week? basic prompt gets 80%? used more than monthly?), and the one concrete change or starting point you'll make.
+
+2. **Demonstrated change — the updated prompt or setup in full** — Pick the most impactful of your three changes and do it now. Paste the new prompt in full — the Project system prompt you wrote, or the targeted paste-in-section prompt, or the cleaner Tier 1 template. No bracket placeholders. This should look visibly different from whatever you did before.
+
+3. **Claude's response to the demonstrated change** — Run the new prompt. Paste Claude's actual response in full. Don't summarise or describe — paste the response.
+
+4. **Reflection (80 words — no more, no less is a meaningful constraint)** — What did this audit reveal about your patterns? Name the specific tendency — over-engineering, under-engineering, using vision when text would do, retyping context instead of using a Project — and why you think it developed. Don't write "I learned to keep things simple." Write what you actually found.
+
+**Where to submit:** Paste your submission into the Submission box at the bottom of this lesson on the Claude Mastery platform. The AI grading engine returns your grade card within 60 seconds.
+
+**Pass mark:** 70 / 100. If you score below 70, the platform shows your grade card with feedback per criterion and activates a **Revise & Resubmit** button after a 24-hour cooldown.
+
+**Rubric (100 points total — pass at 70):**
+- **Specificity (25 pts)** — Are the three tasks real and current — not hypothetical? Is each tier decision grounded in the 3-question test with specific numbers (not "saves time" but "saves 45 minutes a week because I restate client context in every chat")? Does the task description give enough detail to picture what the work actually involves?
+- **Structure (25 pts)** — Does each of the three entries cover all four components: the task, the current tier, the recommended tier (with 3-question test answers), and the change? Is the demonstrated change clearly separated from the audit entries? Are all three submission items present?
+- **Constraint clarity (25 pts)** — Is the demonstrated change actually shown — prompt in full, Claude's response pasted in — rather than described? Does the demonstrated prompt reflect the tier change the student identified (a Project system prompt if moving to Tier 2, a specific pasted section if moving from file upload to direct paste)? Are bracket placeholders absent — was the prompt actually run?
+- **Outcome focus (25 pts)** — Does the 80-word reflection identify a specific pattern — not just "I over-engineered" but which tasks, which tendency, and why? Does the student understand the difference between an over-engineering finding and an under-engineering finding? Is the reflection honest — does it match what the audit entries actually revealed?
+
+---
+
+## Notes for the AI grading engine
+
+(Not shown to student)
+
+- **Reward (high marks):**
+  - All three tasks are named with enough specificity to picture the work — "writing Instagram captions for three recurring clients" not "social media content"
+  - The 3-question test is answered explicitly for each task: each of the three questions (30 min/week threshold, 80% from a basic prompt, used more than monthly) is stated with a specific answer, not just a conclusion
+  - The recommended tier differs from the current tier for at least two of the three tasks — all three identical is suspicious; a mix of "stay here," "move up," and "move down" is realistic
+  - The demonstrated change shows a genuinely new approach — a Project system prompt written out in full, or a prompt that pastes a specific section rather than uploading a whole file — not just a minor edit to what they already did
+  - Claude's full response is pasted in — the student ran the prompt
+  - The 80-word reflection names a specific pattern (e.g., "I default to Projects for one-off tasks because they feel more professional" or "I screenshot documents instead of copying text because I didn't know the difference") and locates why it developed
+  - High-scoring students often identify both an over-engineering and an under-engineering finding across their three tasks — this shows they ran the audit honestly in both directions
+
+- **Penalise (dock points):**
+  - Any of the three tasks is described at the level of a category, not a specific task ("email writing," "research," "content creation" with no further detail)
+  - The 3-question test is mentioned but not answered per task — a general reference to the framework without task-specific application
+  - The "recommended tier" is the same as the "current tier" for all three tasks with justifications that don't engage with the test criteria — likely the student is rationalising, not auditing
+  - The demonstrated change uses bracket placeholders or is described in future tense ("I would do this...") — it was not actually done
+  - Claude's response is missing or summarised rather than pasted in full
+  - The 80-word reflection is a generic summary of the lesson content ("I learned that simpler is better") without a specific personal finding
+  - The reflection word count is substantially off — under 60 or over 110 words suggests the student didn't treat the constraint seriously
+
+- **Common 60–69 patterns:** The three tasks are real but described loosely — enough to understand the category, not enough to picture the specific work. The 3-question test answers are implied ("this saves a lot of time") rather than stated ("this saves 45 minutes a week"). The demonstrated change is shown, but the prompt is close to what the student already used — the tier shift is claimed but not visible in the work. The 80-word reflection identifies a pattern but attributes it to "habit" without naming what the habit is or why it formed. In feedback: quote the task description and ask for one more specific detail — what kind of email, for which client type, how often. Ask the student to state each 3-question answer as a number or a yes/no. Quote the demonstrated prompt and ask: what changed from your previous approach?
+
+- **Common 80+ patterns:** All three tasks are named at the level of a specific recurring workflow. The 3-question test answers are numerical or clearly stated: "saves 40 minutes a week," "a basic prompt gets me to about 60% — not enough because the tone calibration matters," "I do this daily." The tier recommendation is different from the current tier for at least two tasks, and the reasoning is grounded in the test rather than intuition. The demonstrated change is visibly different — if they're moving to Tier 2, there's a Project system prompt written in full; if they're moving down from file upload to paste, the prompt shows a specific pasted section. The 80-word reflection names a specific pattern, locates it ("I always reach for Projects because they feel more organised, even for one-off tasks"), and acknowledges what the audit found — often something surprising or uncomfortable. These submissions show the student has genuinely looked at their own setup rather than producing what they think the rubric wants.
+
+- **Feedback tone:** Direct, specific, and kind. Quote the student's task descriptions when showing what more specificity looks like. If the 3-question test wasn't answered per task, list the three questions and ask the student to apply them explicitly to each task in their resubmission. If the demonstrated change looks like the same approach with minor edits, name what you see and ask: what tier did you move to, and where is that visible in the prompt? End with one concrete next step — either a specific edit for resubmission, or (if they passed) the one audit finding worth acting on next.
+
+- **Resubmission gating:** Check whether the task descriptions have become more specific — not just longer. Check whether the 3-question test is now answered explicitly per task. Check whether the demonstrated change shows a genuine tier shift — not just a rephrased version of the original. If the student changed which task they demonstrated, award credit if the new demonstration is more clearly grounded in the tier change they identified. Consistent improvement across all three criteria (more specific, more structured, more honest reflection) warrants a pass on resubmission even if the individual components aren't perfect.
