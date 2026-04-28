@@ -1,0 +1,365 @@
+# Lesson 3.4 — Learning and explanation
+
+**Module:** 03 · Practical Daily Applications
+**Estimated time:** 25 minutes
+**Format:** Read + Practice + Graded deliverable
+
+## Pre-requisites
+- Lesson 1.1 — What Claude is, and what it isn't
+- Lesson 1.2 — Write your first real prompt
+- Lesson 1.3 — Audit your current AI use
+- Lesson 1.4 — Map your weekly tasks
+- Lesson 1.5 — Your business context
+- Lesson 1.6 — Put your context to work
+- Lesson 3.1 — (Module 3, Lesson 1)
+- Lesson 3.2 — (Module 3, Lesson 2)
+- Lesson 3.3 — (Module 3, Lesson 3)
+
+## Learning objectives
+
+By the end of this lesson you'll be able to:
+- Use Claude as an on-demand teacher that explains any topic at exactly the level you need
+- Write a level-setting phrase that gets you the right depth of explanation without over- or under-shooting
+- Build a follow-up question habit that converts a first explanation into genuine understanding
+- Use Claude to break down documents you need to act on — contracts, policies, compliance material, financial terms
+- Prompt for what you need to DO with knowledge, not just what you need to KNOW
+
+---
+
+## Lesson script
+
+### You already know how to learn — you just don't have the right teacher available
+
+Most of the time, learning something for {{businessName}} is inconvenient. You need to understand a clause in a head-contractor agreement before you sign it. You need to know what "retention" means in a residential build before you accept the terms. You need to understand how the ATO's contractor reporting rules apply to your sub-contracted plumber before BAS time. But your accountant is booked until Thursday, the lawyer charges $500 to read one paragraph, and Google gives you seventeen tabs of partially relevant content that each lead to three more tabs.
+
+Claude is available right now. It will answer your question at the level you need, without charging by the hour, without making you feel like you should already know this, and without giving you a 900-word article when you needed a two-minute answer.
+
+This is not a small thing. For trades businesses in particular, the gaps between what you know and what you need to know to make a decision are constant. Claude doesn't close all of them — but it closes far more than most people realise, because they haven't thought about it as a learning tool yet.
+
+This lesson is about that. Specifically: how to get explanations that are actually calibrated to you, how to follow up in a way that turns explanation into understanding, and how to use Claude for the highest-value learning task most trades owners never think to try — understanding documents you need to act on.
+
+### Setting the level: why "explain simply" doesn't work
+
+The most common mistake when asking Claude to explain something is using the phrase "explain it simply." On the surface, this seems like a good instruction. In practice, it almost always produces the wrong level.
+
+"Simply" is relative. To an accountant, "simply" means stripping out all the technical vocabulary. To an experienced builder asking about superannuation laws, "simply" might mean assuming basic financial literacy. To a first-year sparkie asking about wiring rules clauses, "simply" might mean explaining the structure of the standards before getting into the clause itself. Claude can't read your mind. "Simply" gives it no anchor.
+
+The fix is one sentence. Use this instead:
+
+```
+Explain this to me like I'm a smart non-expert in this area. I understand [one thing you do know], but I haven't [the thing you haven't done or studied].
+```
+
+For example: "Explain this to me like I'm a smart non-expert in this area. I understand basic job costing, but I've never read a head-contractor agreement before." Or: "Explain this to me like I'm a smart non-expert in this area. I understand how progress claims work in principle, but I've never used the security of payment process before."
+
+That phrase — "smart non-expert" — does specific work. It tells Claude not to explain what a contract is, or what a website is, or what a dollar is. You're not a beginner at life. You're a beginner at this topic. Claude should pitch the explanation accordingly: no condescension, no assumption that you know the jargon, but also no padding that assumes you can't handle a real explanation.
+
+This is a phrase worth saving. It works across almost every learning context.
+
+### The follow-up question habit
+
+The first explanation Claude gives you is the start, not the end. A good first explanation gives you the framework. The follow-up questions are what turn that framework into something you can actually use.
+
+There are two follow-up questions worth making a habit of. Use them every time you learn something new from Claude.
+
+**"What's a concrete example of that?"**
+
+Explanations work in the abstract. Examples show you what something actually looks like in practice. If Claude explains what a "retention clause" is in a residential build contract, ask it to show you what one looks like, how it typically gets triggered, and what a sub-contractor should watch for. If Claude explains what "depreciation" means on your ute, ask it to show you the numbers on the actual vehicle you own. Abstract understanding doesn't survive contact with reality unless you've tested it with an example first.
+
+**"What's the part people get wrong about this?"**
+
+This question does something most explanations don't do on their own: it tells you where the traps are. Every concept has a common misunderstanding attached to it — a way that people who've half-learned it tend to apply it incorrectly. If you know the common mistake upfront, you can avoid it. You can also check whether you've been making it already.
+
+These two questions can turn a four-minute explanation into a ten-minute one. That's a good trade. You're not just collecting information — you're testing your understanding and pre-empting the errors before you make them.
+
+### Common mistake → better approach
+
+**Mistake:** Asking Claude to explain something without telling it what you already know.
+
+"Can you explain GST to me?" Claude produces a comprehensive explanation starting from scratch — what GST is, how it works in Australia, how to register. You already know all of that. What you needed was an explanation of how GST applies to a job where you supplied materials at cost-plus and labour separately on a residential build.
+
+**Better approach:** Anchor the explanation to what you already know and what you need.
+
+"I understand how GST works for standard labour-and-materials invoicing on residential jobs. What I'm not clear on is how it applies when I'm doing a cost-plus job for a builder where the materials are passed through at cost and my margin sits on the labour and supervision. Can you explain how a sub-contractor should calculate and report GST on a cost-plus arrangement like this?"
+
+Now Claude starts at the right level. It skips the basics you've already got and goes directly to the thing you actually need to understand.
+
+### Using Claude to understand documents you need to act on
+
+This is the use case most tradies don't think of until someone suggests it — and then they use it constantly.
+
+You receive documents all the time that you need to understand before you can act on them. Head-contractor agreements. Supplier credit terms. Sub-contract templates. ATO correspondence. Public liability and tools-of-trade insurance policies. Council compliance notices. Engineer's reports on a job. These documents are written for lawyers or regulators, not for tradies. They contain specific terms, clauses, and cross-references that are impenetrable if you don't already know the field.
+
+Claude can read them and explain them to you. Not replace your lawyer or accountant — that's not the claim here. But explain what a clause means, flag what questions you should be asking your lawyer, and tell you what the key terms are before you walk into a meeting about it.
+
+The prompt pattern for document understanding looks like this:
+
+```
+I'm a [your trade] in [location]. I've received [type of document] and need to understand it before I [sign it / respond to it / meet with my accountant about it].
+
+I'm going to paste the relevant section below. Please:
+1. Explain what this section means in plain language
+2. Tell me what obligations it places on me specifically
+3. Flag anything that seems unusual, restrictive, or worth getting professional advice on
+4. Tell me what questions I should be asking before I agree to this
+
+[paste the clause or section]
+```
+
+This prompt pattern is repeatable. You can use it for any document. Paste the section you don't understand — not the whole document — and ask for those four things. You don't need to understand the whole contract before you can ask a good question. You just need to know which part is confusing you.
+
+One important note: Claude's explanation is a starting point, not a legal opinion. Use it to get literate enough to have a better conversation with your lawyer or accountant. Use it to know which questions to ask. Do not use it as a substitute for professional advice on anything you're about to sign.
+
+### Learning for action vs. learning for interest
+
+There's a difference between understanding something for interest and understanding something because you need to do something with it. Both are valid — but they require different prompts.
+
+Learning for interest is open-ended. You want to understand how something works, broadly. The answer can be comprehensive, exploratory, even a little discursive.
+
+Learning for action is specific. You need to understand exactly what you need to know to make a decision, fill in a form, have a conversation, or take a step. Nothing more than that. Extra information isn't neutral — it uses up your attention and makes the thing you actually need to know harder to find.
+
+When you're learning for action, tell Claude that explicitly. Add this to your prompt:
+
+```
+I need to understand this well enough to [specific action]. Please focus only on what's relevant to that — don't give me background I don't need.
+```
+
+For example: "I need to understand this well enough to fill in the contractor reporting section of my tax return for sub-contracted plumbers. Please focus only on what's relevant to that — don't give me background on the broader tax system."
+
+Or: "I need to understand this well enough to decide whether to sign a personal guarantee clause in a head-contractor agreement. Please focus on the practical implications and the questions I should ask my lawyer — not the general law around guarantees."
+
+The action frame does three things. It tells Claude what level of detail you need. It tells Claude what to exclude. And it gives Claude a test it can apply: does this information help the student take the specific action? If not, leave it out.
+
+This makes a meaningful difference in the output. Focused explanations are faster to read and more likely to stick. You're not learning a subject — you're learning what you need to do the next thing.
+
+### Putting it together: the full learning prompt
+
+Here is a prompt structure that combines all five teaching beats from this lesson. You don't have to use all of it every time — strip it back for simple questions. But for anything substantive, this structure gets you from confusion to clarity in one or two exchanges:
+
+```
+Explain [topic] to me like I'm a smart non-expert in this area.
+
+I already understand [what you know]. I haven't [what you haven't studied or done].
+
+I need to understand this well enough to [specific action].
+
+After your explanation:
+- Give me one concrete example of how this works in practice
+- Tell me what people commonly get wrong about this
+
+[Paste any relevant document or section here if applicable]
+```
+
+This is not a formula you have to follow rigidly. It's a checklist for the components that make learning conversations with Claude actually useful, {{firstName}}. Level, prior knowledge, action orientation, example, common mistake. Cover those five and you'll get explanations that are worth more than most paid courses on the same topic.
+
+---
+
+## Worked examples
+<!-- industry-personalisation
+{
+  "mode": "industry-personalised",
+  "default_index": 0,
+  "mapping": {
+    "Creative & Marketing": 3,
+    "SaaS / Software": 5,
+    "Trades & Construction": 2,
+    "E-commerce & Retail": 0,
+    "Trades & Services": 2,
+    "Other": 0,
+    "Health & Wellness": 6,
+    "Education & Coaching": 7
+  }
+}
+-->
+At runtime, the platform shows ONE example below — the one matching the learner's industry. The other examples are removed from the page. If the learner has no industry set or "Other", the example at `default_index` is shown.
+
+### Example 1: Understanding "non-revolving credit facility" before a Friday meeting
+
+**Scenario:** Financial term in a bank proposal · Retail
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The prompt anchors the explanation to what the student already knows (standard business loan), names the specific action they need to take (ask the right question before Friday's meeting), and requests both an example and a common misconception. Claude can calibrate its answer precisely instead of starting with "Credit is the ability to borrow money."
+
+---
+
+### Example 2: Decoding a make-good clause on a five-year commercial lease
+
+**Scenario:** Lease clause before signing · Hospitality
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** Pasting the actual clause text rather than describing it gets Claude working from the real language, not a paraphrase. The specific fitout details (kitchen, counter, lighting) let Claude tailor its answer to this tenant's actual situation rather than explaining make-good obligations in the abstract.
+
+---
+
+### Example 3: "Deemed contractor" provisions ahead of a payroll tax audit
+
+**Scenario:** Compliance concept before an audit · Construction
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The action frame ("useful conversation with my accountant tomorrow") is specific enough that Claude knows exactly what level of detail to provide — enough to walk into the meeting prepared, not enough to replace the accountant. The prompt also surfaces the student's genuine confusion ("how can this apply to me?"), which lets Claude address that misunderstanding directly.
+
+---
+
+### Example 4: Bleed and safe zone for first large-format print job
+
+**Scenario:** New technical term in your own industry · Design
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The specific software (Illustrator) and exact dimensions let Claude give immediately actionable advice — not generic print theory. The "what goes wrong" request is particularly valuable here because the consequences of getting this wrong are concrete and costly: reprinting large-format panels is expensive.
+
+---
+
+### Example 5: Casual conversion rules before the next roster review
+
+**Scenario:** Regulation change that affects staff · Hospitality
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The deadline (roster review in three weeks) and the specific staff number (six casual staff) make this immediately actionable. Claude knows the output needs to be practical enough to help someone audit their own roster — not a general overview of employment law. The "what employers get wrong" follow-up is calibrated to hospitality, which has high casual staff ratios and frequent confusion about conversion thresholds.
+
+---
+
+### Example 6: Full learning prompt to understand the R&D Tax Incentive for a small software company
+
+**Scenario:** Melbourne SaaS founder · Understanding the R&D Tax Incentive before lodging a claim
+
+**Prompt:**
+```
+I run a 5-person SaaS company in Melbourne (workforce planning tool for aged care providers). Our accountant mentioned we should look at the R&D Tax Incentive for last financial year — we spent around $180k on dev salaries building a new rostering engine. I've never claimed it before and I'm trying to decide whether it's worth engaging an R&D consultant or attempting it ourselves.
+      
+      Explain the R&D Tax Incentive at the level of a SaaS founder who runs the business but isn't a tax specialist — assume I understand "deduction" vs "offset" but nothing more specific than that. I'm learning this to act, not for general interest.
+      
+      Cover:
+      1. What activities actually qualify as "core R&D" vs "supporting R&D" for a software company
+      2. The refundable vs non-refundable offset — which one applies to us if our turnover is under $20m
+      3. Common mistakes small SaaS companies make on first claim
+      4. What evidence I'd need to have kept during the year (and what I should start doing now for this year)
+      
+      After your explanation, ask me three follow-up questions that would change your advice — the kind a specialist would ask before quoting me.
+```
+
+**Why it works:** This uses the full learning prompt structure from the lesson. The level-setting is specific ("SaaS founder who runs the business but isn't a tax specialist", with a known/unknown line drawn at "deduction vs offset"). It's framed as learning-for-action ("decide whether to engage a consultant"), and the closing "ask me three follow-up questions" builds the follow-up question habit directly into the prompt.
+
+---
+
+### Example 7: Decoding a Medicare item number update before briefing the GPs on Monday
+
+**Scenario:** GP practice manager · Understanding a Medicare item number change
+
+**Prompt:**
+```
+I'm the practice manager at Riverstone Family Medical, 4 GPs, in regional NSW. MBS Online has updated the descriptor and requirements for one of the chronic disease management item numbers we bill regularly, and our software vendor sent through a one-page summary that I find genuinely confusing. I'm pasting the summary below.
+      
+      Please explain this at the level of a non-clinical practice manager who books, bills and audits but doesn't see patients. I understand bulk-billing, MBS basics and what a care plan is — you don't need to define those.
+      
+      Cover:
+      1. What has actually changed vs the previous rules, in plain English.
+      2. What the practice has to do differently from the effective date — billing, documentation, recall.
+      3. Two or three things that could trip us up at audit if we get it wrong.
+      4. Three follow-up questions I should take to the GPs before we update our templates.
+      
+      This is for a Monday team meeting, not clinical decision-making — I'm not asking you to advise on patient care, just help me understand the operational change so we bill it correctly. If anything in the summary is genuinely ambiguous, say so rather than guessing.
+```
+
+**Why it works:** This uses the full learning prompt from 3.4 — audience level set ("non-clinical practice manager"), what's already known, specific structure, and explicit purpose (learning for action, not interest). The "say so rather than guessing" line is the lesson's habit of inviting Claude to flag ambiguity instead of fabricating certainty. Stays operational, never clinical.
+
+---
+
+### Example 8: Working out what an updated ASQA standard actually means for our trainer files
+
+**Scenario:** RTO operations lead · Understanding an updated ASQA standard
+
+**Prompt:**
+```
+I run operations at SiteSafe Training, a small RTO in Brisbane delivering construction and white card courses (3 trainers, about 600 students a year). ASQA has updated one of the Standards for RTOs that affects trainer competency evidence, and I'm working through what we have to change before our next compliance review. I'm pasting the relevant section of the updated standard below.
+      
+      Please explain this at the level of an RTO ops lead who knows the basics — TAE qualifications, validation, version control of training products — but isn't a compliance consultant.
+      
+      Walk me through:
+      1. What this clause is requiring in plain English.
+      2. What's actually different from how most small RTOs would have been doing it previously.
+      3. What evidence we'd need on file for each trainer to demonstrate compliance.
+      4. Three things an auditor would likely look for first.
+      5. Three follow-up questions I should ask our compliance consultant before I redesign the trainer file template.
+      
+      I'm using this to update an internal checklist, not to give regulatory advice. If the wording is genuinely open to interpretation, flag it — I'd rather know than have you smooth it over.
+```
+
+**Why it works:** Same full learning prompt structure from 3.4 — audience level ("RTO ops lead, knows TAE/validation"), the document pasted in, action-oriented framing ("update an internal checklist"), and follow-up questions baked in. The flag-ambiguity instruction matches the lesson's point about not letting Claude paper over genuinely unclear regulation.
+
+---
+
+## Graded deliverable
+
+**Title:** Learn something you need for your business — and show how you did it
+
+**Brief:** Pick something real from your business that you need to understand but haven't fully got your head around yet — a document you've received, a financial or legal term in a proposal, a compliance concept, or a technical term in your industry. Apply the method: set the level, name what you know, name what you need to do with the knowledge, and ask for an example and the common misconception. Then ask one follow-up that goes deeper. Paste the whole exchange and add an 80-word note on what you'll do differently.
+
+**What to submit:**
+
+1. **What you needed to understand and why** — One or two sentences: name the topic, why it matters to your business, and what you need to do with the knowledge.
+
+2. **Your explanation prompt** — The exact text you sent to Claude — including your level-setting phrase, what you already know, and your action frame.
+
+3. **Claude's response + your follow-up Q + Claude's follow-up response** — Paste Claude's first response in full (do not summarise), then your one follow-up question that goes deeper into the explanation (not a restart), then Claude's response to that.
+
+4. **What you'll do differently (80 words — name a specific next action)** — Now that you understand this, name one specific next action this understanding makes possible. Not "I understand it better now" — the named meeting, document, decision, or conversation.
+
+**Where to submit:** Paste your submission into the Submission box at the bottom of this lesson on the Claude Mastery platform. The AI grading engine returns your grade card within 60 seconds.
+
+**Pass mark:** 70 / 100. If you score below 70, the platform shows your grade card with feedback per criterion and activates a **Revise & Resubmit** button after a 24-hour cooldown.
+
+**Rubric (100 points total — pass at 70):**
+- **Specificity (25 pts)** — Is the topic real and business-relevant — a named document, a term from a specific proposal, or a compliance concept grounded in a situation you're actually in? Generic topics ("explain how tax works") score low. A topic with a named document, counterparty, or decision scores high.
+- **Structure (25 pts)** — Does the prompt set the level using a calibrated phrase (not just "explain simply"), name what you already know, and include an action frame — what you need to DO with this knowledge? Prompts missing the level-setting phrase or the action frame score below 18.
+- **Constraint clarity (25 pts)** — Does the prompt tell Claude what you already know so the explanation skips the basics? Does it request a concrete example and a common misconception? Does the follow-up question push deeper rather than restart the topic? All four present scores 23–25.
+- **Outcome focus (25 pts)** — Does the 80-word reflection name a specific next action the new understanding makes possible — a meeting you'll prepare for, a document you'll sign differently, a conversation you'll have? "I understand it better now" is not an outcome.
+
+---
+
+## Notes for the AI grading engine
+
+(Not shown to student)
+
+- **Reward (high marks):**
+  - Topic is clearly business-relevant and real — student can describe what they need to understand and why in concrete terms (a document they've received, a decision to make, a meeting coming up)
+  - Prompt uses a calibrated level-setting phrase, not just "explain simply" — ideally the "smart non-expert" formulation or equivalent that names a baseline knowledge level
+  - Prompt explicitly states what the student already knows, so the grading engine can confirm Claude was given a starting point
+  - Prompt includes an action frame — what the student needs to be able to DO with this knowledge
+  - Follow-up question goes deeper into the first explanation rather than starting a new topic or asking for a summary
+  - The 80-word reflection names a specific, concrete next action — a meeting to prepare for, a document to sign, a decision to make, a conversation to have — that this understanding now makes possible
+
+- **Penalise (dock points):**
+  - Topic is generic or clearly hypothetical — "explain how GST works" with no business context, "explain what a shareholder agreement is" with no situation attached
+  - Prompt uses "explain simply" or "explain in plain English" with no further calibration — no baseline knowledge stated, no action frame
+  - Follow-up question restarts the topic ("can you tell me more about X?") rather than deepening the first explanation
+  - Reflection says only that the learning was useful or interesting, without naming a specific action the new knowledge enables
+  - Student pastes a summary of Claude's response rather than the full text
+  - Prompt was sent without any indication of what the student already knows — Claude had to explain from scratch with no calibration
+
+- **Common 60–69 patterns:** Student picks a real topic and sets the level, but the action frame is vague ("to understand it better" rather than a named action) or the follow-up question is surface-level ("can you give me another example?" rather than targeting a specific part of the explanation they didn't fully follow). The reflection identifies that the learning was useful but stays abstract. In feedback, quote their action frame and ask: "What specifically will you do with this understanding in the next week? Name the meeting, the document, or the decision." Quote their follow-up question and show what a deeper version of it looks like.
+
+- **Common 80+ patterns:** Topic is unmistakably real — the student can name the document, the counterparty, the deadline, or the specific decision. The prompt uses precise level-setting (names what they know and what they don't). The action frame is specific. The follow-up question targets a part of the explanation that wasn't clear or pushes into the common misconception territory. The 80-word reflection names a specific action with enough detail that the grading engine can picture the next step the student will take. Claude's responses in the pasted exchange are visibly calibrated — starting at the right level, not explaining basics the student already knows.
+
+- **Feedback tone:** Direct, specific, kind. Quote the student's own words. If their level-setting phrase is vague, quote it back and show what a precise version looks like. If their reflection is abstract, quote a sentence and ask what specific action it points to. End with one concrete next step: either the single most valuable change to their prompt structure, or a follow-up question they could ask Claude right now to deepen their understanding further.
+
+- **Resubmission gating:** If the student resubmits, check whether the action frame has become more specific (the most common improvement needed), whether the follow-up question goes deeper, and whether the 80-word reflection now names a concrete action. Name any improvement explicitly — quote the old version and the new version side by side if possible. If the reflection has more words but still no named action, say so directly: "You've written more here, but I still can't see what you'll do differently. Name the next thing you'll actually do — even if it's just booking a conversation with your accountant."
