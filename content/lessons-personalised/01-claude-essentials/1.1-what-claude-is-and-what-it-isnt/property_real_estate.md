@@ -107,10 +107,14 @@ The difference is specificity and constraints. Claude meets you at whatever leve
   "mode": "industry-personalised",
   "default_index": 0,
   "mapping": {
+    "Creative & Marketing": 1,
     "SaaS / Software": 5,
-    "Professional Services": 0,
+    "Professional Services": 1,
+    "Trades & Construction": 3,
+    "Trades & Services": 3,
     "Property & Real Estate": 3,
-    "Finance & Accounting": 0,
+    "Finance & Accounting": 4,
+    "E-commerce & Retail": 3,
     "Health & Wellness": 2,
     "Education & Coaching": 6,
     "Other": 0
