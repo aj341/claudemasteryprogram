@@ -3,10 +3,10 @@ import { redirect, notFound } from "next/navigation";
 import { db } from "@/db";
 import { profiles, lessonSubmissions, grades } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
-import { LESSON_1_1, LESSON_1_1_PAGES } from "@/lib/lessons/1-1-content";
+import { LESSON_1_1, LESSON_1_1_PAGES, type LessonPage } from "@/lib/lessons/1-1-content";
 import LessonShell from "@/components/lesson/LessonShell";
 import LessonView, { type LessonViewData, type ModuleNavItem } from "@/components/lesson/LessonView";
-import { getLessonBySlug, listAllLessons, getModuleTitle, pickExamplesForIndustry } from "@/lib/lessons";
+import { getLessonBySlug, listAllLessons, getModuleTitle, pickExamplesForIndustry, type PersonalisationProfile } from "@/lib/lessons";
 import { normaliseIndustry } from "@/lib/industries";
 
 const HARDCODED_1_1_SLUG = "1.1-what-claude-is-and-what-it-isnt";
@@ -60,6 +60,20 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
   if (!profile?.onboardingComplete) redirect("/onboarding");
   const fullName = profile?.fullName ?? session.user.name ?? "";
   const firstName = (fullName || session.user.email!.split("@")[0]).split(" ")[0];
+
+  // W1-T03c: profile object handed to getLessonBySlug so it can pick the
+  // industry variant from content/lessons-personalised/ and run token
+  // substitution against the learner's actual data.
+  const personalisationProfile: PersonalisationProfile = {
+    firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+    industry: profile?.industry ?? null,
+    businessName: profile?.businessName ?? null,
+    weeklyTasks: (profile?.weeklyTasks as string[] | null) ?? null,
+    goals: (profile?.goals as string[] | null) ?? null,
+    brandVoice: profile?.brandVoice ?? null,
+    productsServices: profile?.productsServices ?? null,
+    customerSnapshot: profile?.customerSnapshot ?? null
+  };
 
   // Check existing submission/grade for this lesson
   const [existingSubmission] = await db
@@ -121,7 +135,7 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
     // W1-T03: hardcoded 1.1 path uses the same personalisation filter as the
     // generic loader. We read the .md file's parsed examples + personalisation
     // config so the hardcoded React content stays in sync with the .md source.
-    const sourceLesson = getLessonBySlug(HARDCODED_1_1_SLUG);
+    const sourceLesson = getLessonBySlug(HARDCODED_1_1_SLUG, personalisationProfile);
     const learnerIndustryShell = normaliseIndustry(profile?.industry ?? null);
     const filteredShellExamples = sourceLesson
       ? pickExamplesForIndustry(sourceLesson.examples, sourceLesson.personalisation, learnerIndustryShell)
@@ -129,10 +143,20 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
     const tunedShellLabel = sourceLesson?.personalisation?.mode === "industry-personalised" && learnerIndustryShell
       ? learnerIndustryShell
       : null;
+    // W1-T03c: if the variant markdown has parsed pages, use those instead of
+    // the hardcoded LESSON_1_1_PAGES so the learner sees their industry's body.
+    // Falls back to LESSON_1_1_PAGES when variant pages can't be derived.
+    const variantPages: LessonPage[] | null = sourceLesson && sourceLesson.body?.pages?.length
+      ? sourceLesson.body.pages.map(p => ({
+          kicker: p.kicker,
+          title: p.title,
+          body: <div dangerouslySetInnerHTML={{ __html: p.html }} />
+        }))
+      : null;
     return (
       <LessonShell
         lesson={LESSON_1_1}
-        lessonPages={LESSON_1_1_PAGES}
+        lessonPages={variantPages ?? LESSON_1_1_PAGES}
         learner={learner}
         priorSubmission={existingSubmission?.responses ? (existingSubmission.responses as Record<string, string>) : null}
         priorGrade={priorGrade}
@@ -143,7 +167,7 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
   }
 
   // -------- All other lessons render from markdown via the generic loader. --------
-  const lesson = getLessonBySlug(slug);
+  const lesson = getLessonBySlug(slug, personalisationProfile);
   if (!lesson) notFound();
 
   // W1-T03: industry personalisation. Filter examples down to the one that

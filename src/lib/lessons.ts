@@ -598,11 +598,17 @@ export function listAllLessons(): LessonIndexEntry[] {
   return out;
 }
 
-export function getLessonBySlug(slug: string): LessonData | null {
+export function getLessonBySlug(slug: string, profile?: PersonalisationProfile | null): LessonData | null {
   for (const file of lessonFiles()) {
     if (slugFromFile(file) !== slug) continue;
     try {
-      const md = fs.readFileSync(file, "utf8");
+      // W1-T03c: prefer the industry variant + token-substituted markdown when
+      // available. loadPersonalisedLesson handles industry → variant → _source.md
+      // → legacy fallback internally and runs applyTokenSubstitution. Only when
+      // it returns null (no source file at all) do we fall through to the raw
+      // legacy read here so we never break a lesson page.
+      const personalisedMd = loadPersonalisedLesson(slug, profile ?? null);
+      const md = personalisedMd ?? fs.readFileSync(file, "utf8");
       const header = parseHeader(md);
       const lead = makeLead(md, header);
       const pages = buildPages(md, header);
