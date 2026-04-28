@@ -1,0 +1,355 @@
+# Lesson 3.1 — Writing with Claude: from ideas to finished drafts
+
+**Module:** 03 · Practical Daily Applications
+**Estimated time:** 30 minutes
+**Format:** Read + Practice + Graded deliverable
+
+## Pre-requisites
+
+- Modules 1 and 2 complete
+
+---
+
+## Learning objectives
+
+By the end of this lesson you'll be able to:
+- Identify which weekly writing tasks are well-suited to Claude drafts
+- Use a brief-then-draft-then-edit workflow to produce finished writing faster
+- Write a prompt that tells Claude your tone, audience, and length constraints upfront
+- Spot the three most common output problems and fix them before they appear
+- Make a clear, honest call about when to write yourself and when to let Claude draft first
+
+---
+
+## Lesson script
+
+### The writing that eats your week
+
+Think about the writing you do in a typical week. Not the creative work, not the big strategic documents — the everyday stuff. The follow-up email after a client meeting. The proposal section explaining your process. The social post that needs to go out on Thursday but you haven't started yet. The SOP for a task your team gets wrong every few weeks. The client update after a project milestone.
+
+These are the tasks you do constantly, often at the end of a long day, often under some pressure. They're not hard. But they take time, they require care, and starting from a blank page has a real drag to it.
+
+This is exactly where Claude earns its place. These tasks have something in common: they follow a pattern. A proposal has a structure. A client update has a tone. An SOP follows a format. Claude has seen enough of this writing to produce a very solid starting point — if you tell it what you actually need.
+
+The key phrase there is "if you tell it." This lesson is about how to do that well.
+
+### The drafting workflow: brief, draft, edit
+
+The most effective way to use Claude for writing has three steps. It sounds obvious, but most people skip step one.
+
+**Step one: Brief Claude.**
+
+Before you ask for a draft, give Claude the context it needs. Who is this for? What's the purpose? What tone fits this person and relationship? How long should it be? What should it avoid?
+
+A brief doesn't have to be long. It can be three sentences. But without it, Claude fills the gaps with assumptions — and those assumptions are usually wrong for your specific context.
+
+**Step two: Get a draft.**
+
+Claude produces the draft. At this point, your job is not to judge it as if it were a final product. Read it as a starting point. Ask: does this have the right structure? Is the key message in there? Is the tone close?
+
+Most of the time, the answer to all three is yes, or close enough. That's worth something. You're not starting from nothing.
+
+**Step three: Edit in your own voice, not rewrite from scratch.**
+
+This is the step most people get wrong. They read Claude's draft, decide it doesn't sound like them, and write a new version from scratch. That wastes the draft.
+
+Your edit should fix what's wrong, not replace everything that's different. Change the phrases that sound off. Cut the sentences you'd never say. Add the detail Claude couldn't know. Move things around if the structure's not quite right. But start from Claude's draft, not a blank page.
+
+By the end of step three, you have something that sounds like you — because you edited it. That's the goal.
+
+### Tone matching: getting Claude closer to your voice
+
+The most common complaint about Claude's writing is that it doesn't sound like the person who asked. This is not Claude's fault. Claude writes to the middle: reasonably professional, reasonably clear, reasonably structured. If your voice is warmer than that, or more direct, or more casual, or more technical, Claude won't know unless you say so.
+
+Here's how to close that gap.
+
+**Describe your voice in concrete terms.** Not "professional" — that's too broad. Try: "Direct and warm, like talking to a colleague I know well." Or: "Formal but never stiff — we're a professional services firm but we write in plain English." Or: "Casual and conversational — we're a small trades business and our clients are homeowners, not corporate."
+
+**Tell Claude what to avoid.** If you hate corporate filler phrases, say so. "No phrases like 'I hope this email finds you well' or 'please don't hesitate to reach out'." If you want short sentences, say so. If you never use bullet points in emails, say that. Claude responds to negative constraints as readily as positive ones.
+
+**Share an example.** This is the single most effective thing you can do. Copy a paragraph from an email you've sent that you were happy with. Paste it in. Say: "Write in the same style as this." Claude will calibrate to your example better than it will to any description of a voice.
+
+**Name the relationship.** The tone you use with a new client is different from the tone you use with someone you've worked with for three years. Tell Claude which this is. "This person has been a client for two years and we have an easy, informal relationship" gives Claude something real to work from.
+
+### The "too long, too formal, too generic" trap
+
+If you've used Claude for writing before and felt underwhelmed, there's a good chance you hit one of three patterns. They're common enough to name.
+
+**Too long.** Claude tends to expand unless you constrain it. A request for "a client update email" might produce something 400 words long that would strike your client as unusual and slightly odd. Fix: set a word count or a sentence count upfront. "Keep this to 150 words" is a perfectly reasonable instruction. So is "three short paragraphs."
+
+**Too formal.** Claude's default tone errs toward professional in a way that can feel stiff, especially for small businesses with close client relationships. Fix: describe what formal means for your context and be specific about where it should be warmer or more direct. The word "professional" is less useful than "the kind of email you'd send to a client you know and like."
+
+**Too generic.** Claude doesn't know your business. It doesn't know your pricing model, your service philosophy, your quirks, or the specific thing that makes your work different. So when it drafts a parent welcome email, it fills in the universal description — which sounds like every other tutoring service. Fix: give it the specifics. Tell it what's distinctive. "We're different from other tutoring services in that every parent gets a 10-minute call after the first session — mention that." Generic output is usually a sign of a generic brief.
+
+All three problems share a root cause: Claude doesn't have enough to work with. Give it more, and the output improves.
+
+### Common mistake → better approach
+
+**Mistake:** "Write me a proposal for a new client."
+
+Claude produces something three pages long, in formal business language, with generic descriptions of services that could apply to any firm.
+
+**Better approach:**
+
+```
+I run a small executive coaching practice in Brisbane. I'm writing a proposal for a corporate client — they want a 6-month leadership development program for three new GMs. Budget is approximately $45,000. The HR director is a sponsor in her 40s, relaxed and collaborative.
+
+Write a proposal introduction (100–150 words) that:
+- Explains our coaching process in plain, warm language (we're not corporate)
+- Mentions that we handle everything from intake through to a final board-ready review — they won't be chasing facilitators
+- Ends with a sentence that makes them feel confident about moving forward
+
+Do not use the words "bespoke" or "tailored" — we've banned those from our proposals.
+```
+
+The better prompt does five things: names the context, describes the client, sets a word count, gives specific content requirements, and adds a constraint about language. That's a brief. Claude can work with that.
+
+### When to write yourself, and when to use Claude
+
+Here's an honest split — not an idealised one.
+
+**Use Claude for the draft when:**
+- The writing follows a recognisable pattern (email, proposal, social post, SOP)
+- You know what you want to say but not how to say it efficiently
+- You're pressed for time and a starting point is more useful than a blank page
+- The stakes are moderate — a good draft that you review and edit is sufficient
+- You need multiple versions (different lengths, different tones, different audiences)
+
+**Write it yourself first when:**
+- The message is sensitive — a difficult conversation with a client, bad news, or anything where the exact phrasing matters more than speed
+- The relationship is close enough that an impersonal draft would do damage if it wasn't fully transformed
+- You already know exactly what you want to say and writing it yourself would be faster than briefing Claude
+- The voice is highly specific to you — something only you would say, drawing on a shared history or private context
+
+**The honest part:** Claude is for drafts. You are for final judgement. That split doesn't change regardless of how good the draft is. You know things Claude doesn't: the history of the relationship, the subtext, what was said last week in a meeting, what this particular person responds well to. The draft gets you 70–80% of the way there. The last 20–30% is yours.
+
+This isn't a limitation to work around — it's the correct use of the tool.
+
+### Putting it together: your writing session
+
+Here's how a practical writing session looks when you use this workflow.
+
+You need to write three things this week: a quote follow-up email to a client who went quiet after receiving pricing, a short LinkedIn post about a project you just finished, and an onboarding SOP for a new part-time staff member.
+
+Start with the email. Brief Claude with the context — who the client is, how long the quote has been sitting, what you want to achieve (re-engage without pressure). Set the length and tone. Review the draft. Make two or three edits. Done.
+
+Do the same for the LinkedIn post — brief it properly with the project detail, the point you want to make, the length you want. Review, edit for your voice, done.
+
+The SOP is slightly different. You'll probably write the content yourself — you know the steps — and use Claude to structure and format it, or to turn your rough notes into clear step-by-step instructions. That's a different kind of drafting but the same principle: you bring the knowledge, Claude brings the structure.
+
+Three pieces of writing, probably 45 minutes total if you're working efficiently. Without Claude and this workflow, that's three separate blank-page starts across your week, each with its own drag and context-switching cost.
+
+That's the practical case for this lesson.
+
+---
+
+## Worked examples
+<!-- industry-personalisation
+{
+  "mode": "industry-personalised",
+  "default_index": 0,
+  "mapping": {
+    "Creative & Marketing": 2,
+    "SaaS / Software": 5,
+    "Professional Services": 4,
+    "Trades & Construction": 1,
+    "Finance & Accounting": 0,
+    "Health & Wellness": 6,
+    "Education & Coaching": 7,
+    "Trades & Services": 1,
+    "Other": 0
+  }
+}
+-->
+At runtime, the platform shows ONE example below — the one matching the learner's industry. The other examples are removed from the page. If the learner has no industry set or "Other", the example at `default_index` is shown.
+
+### Example 1: Warm, non-pushy re-engagement in 80–100 words
+
+**Scenario:** Quote follow-up · Bookkeeper chasing a quiet client
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** Relationship context, a specific dollar amount (Claude uses this to frame appropriateness), a clear tone instruction, two explicit phrases to avoid, and a tight word count. The result will be specific, warm, and brief — not a template.
+
+---
+
+### Example 2: Leads with the design problem, not generic praise
+
+**Scenario:** LinkedIn post · Building designer sharing a project
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** Leads with the interesting design challenge rather than a generic "project showcase." The tone instruction ("not jargon-heavy") and the engagement ask prevent a flat, self-congratulatory post.
+
+---
+
+### Example 3: Raw notes become a numbered SOP a new hire can follow
+
+**Scenario:** SOP · Marketing agency's monthly reporting
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** Raw notes in; usable document out. The "common errors" section is a smart addition — Claude can generate it from the steps, which makes the SOP genuinely useful rather than just procedural.
+
+---
+
+### Example 4: Own the delay, give a new date, stay out of corporate filler
+
+**Scenario:** Accountability email · Web agency explaining a delay
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** Accountability emails are easy to get wrong — too defensive, too apologetic, or too vague. The brief specifies a tone that's direct without being dismissive, gives a concrete date, and bans the most common corporate filler.
+
+---
+
+### Example 5: Confident, specific, not watered down
+
+**Scenario:** Proposal section · Workplace safety consultant's approach
+
+**Prompt:**
+```
+
+```
+
+**Why it works:** The brief names three specific, distinctive things about this consultant's approach — the site observation day, training supervisors, documentation as output — so Claude has something real to build around. The tone instruction prevents the watered-down language that often shows up in Claude's default proposal writing.
+
+---
+
+### Example 6: Brief, draft, edit — cutting a too-marketing-y product update down to size
+
+**Scenario:** Wellington SaaS founder · Drafting a product update blog post
+
+**Prompt:**
+```
+I'm the founder of RosterRight, a small SaaS for café and restaurant owners in Australia and NZ. We're a team of 5 in Wellington with about 380 paying venues. I write a short product update post on our blog every fortnight.
+      
+      Brief for this post:
+      - Audience: existing customers — owner-operators, time-poor, on-shift when they read this
+      - What shipped: shift-swap approvals can now be done from the mobile app (was web-only); we cut the wage cost preview from 8 seconds to under 1
+      - Tone: conversational, like I'm talking to a customer in their venue. Not corporate. Match the voice of our existing posts (short sentences, plain words, no "empower" or "seamless")
+      - Length: 200–250 words
+      - Lead with what changed for them, not the engineering story
+      
+      Draft the post.
+      
+      After your draft, do a self-edit pass: cut any line that sounds like marketing copy, any feature that wasn't in my brief, and any sentence I'd be embarrassed to read aloud to a customer. Show me the edited version with a 2-line note on what you cut and why.
+```
+
+**Why it works:** The prompt walks the brief-draft-edit workflow on a single turn — brief (audience, what shipped, tone, length, what to lead with), draft, then a tone-matching edit pass that explicitly hunts "marketing copy" and banned words like "empower" and "seamless". That self-edit step is the lesson's answer to the "too long, too formal, too generic" trap, with the founder's voice as the reference point.
+
+---
+
+### Example 7: Sharpening a too-generic website draft with practice-specific detail
+
+**Scenario:** Allied health practice owner · Drafting a website blurb for a new shockwave service
+
+**Prompt:**
+```
+I run Bayside Physio & Podiatry, a 3-clinician practice in Mentone, Melbourne. We've just added shockwave therapy and need a 180-word blurb for the "Services" page on our website.
+      
+      Brief:
+      - Audience: existing patients (40s–60s, mostly runners, tradies, and people on their feet all day) plus new patients searching locally
+      - Tone: warm, plain-language, confident but not salesy — match the rest of our site (no "wellness journey" or "holistic" language)
+      - Must mention: typically used for plantar fasciitis, Achilles tendinopathy, and tennis elbow that hasn't responded to 6+ weeks of standard care; sessions are 20 minutes; usual course is 3–5 sessions a week apart; not suitable during pregnancy or for patients on blood thinners
+      - Must NOT promise outcomes or claim it "cures" anything
+      - Length: 160–180 words, two short paragraphs, ending with a one-line prompt to call reception on (03) 9XXX to check suitability
+      
+      Draft it now. After I read it I'll come back with edits — I expect the first pass to be too generic so I'll feed you the specific conditions our patients actually present with.
+```
+
+**Why it works:** This is the brief-draft-edit workflow in action. The owner sets a clear brief upfront, names the "too generic" trap, and explicitly plans the edit pass — "I'll feed you the specific conditions our patients actually present with." Tone matching is locked in by banning "wellness journey" phrasing and pointing Claude at the existing site voice.
+
+---
+
+### Example 8: Avoiding the generic-draft trap by feeding Claude real session notes
+
+**Scenario:** Tutoring business owner · Drafting a Term 1 wrap-up email to parents
+
+**Prompt:**
+```
+I run Northside Tutoring, a small maths and English tutoring service in Chatswood, Sydney — about 28 active students from Year 5 to Year 10. I need a Term 1 wrap-up email that goes to all parents this Friday before the school holidays.
+      
+      Brief:
+      - Audience: parents who've seen weekly invoices but not much else from us this term
+      - Tone: warm, specific, slightly informal — the way I'd speak at a parent meeting. No "21st century learners" or "learning journey" language.
+      - Length: 220–260 words
+      - Structure: short hello, three sentences on what most students worked on this term (use my notes below), one paragraph of two specific (anonymised) wins, a Term 2 heads-up that we're running a Year 9–10 NAPLAN-style practice block in week 3, and a sign-off from me (Priya).
+      
+      My term notes:
+      - Year 5–6 cohort: fractions to decimals, persuasive writing structure
+      - Year 7–8 cohort: linear equations, essay paragraph structure (TEEL)
+      - Year 9–10 cohort: quadratics, text response essays
+      - Wins to reference (anonymised): one Year 7 student moved from a C to a B+ in a recent maths topic test; a Year 9 student got their first A in a text response essay after struggling all of last year.
+      
+      Draft it. If it reads generic I'll send you more session-by-session detail to rework it.
+```
+
+**Why it works:** The brief-draft-edit loop is set up explicitly: notes go in, a draft comes out, and the owner has already flagged that a generic draft will get sharpened with more session detail. Tone matching is enforced by banning education jargon and asking for "the way I'd speak at a parent meeting" — the lesson's "too long, too formal, too generic" trap, head-on.
+
+---
+
+## Graded deliverable
+
+**Title:** A finished piece of writing — prompted, drafted, and edited
+
+**Brief:** Use the brief-draft-edit workflow to produce one complete piece of writing you actually need this week. An email, a proposal section, a social post, a client update, an SOP — your call, as long as it's for a real audience, not a made-up exercise. You'll submit the brief, the prompt, Claude's draft, your final edited version, and an 80-word note on what you changed and why.
+
+**What to submit:**
+
+1. **Context + full prompt** — Start with 1–3 sentences on what you needed to write and who it was for. Then paste the full prompt you sent to Claude — exactly as given, no cleanups.
+
+2. **Claude's draft (do not edit before pasting)** — Paste Claude's full response as it came back. This is what the grader compares your final version against — no silent tidy-ups.
+
+3. **Your final edited version** — The version you'd actually send or publish. Edit Claude's draft in your voice rather than rewriting from scratch — we're looking at the delta between draft and final.
+
+4. **What you changed and why (80 words — the constraint is part of the exercise)** — In 80 words, name the specific edits you made and why. Not "I made it sound more like me" — point to a phrase you replaced, a sentence you cut, a detail you added that Claude couldn't have known.
+
+**Where to submit:** Paste your submission into the Submission box at the bottom of this lesson on the Claude Mastery platform. The AI grading engine returns your grade card within 60 seconds.
+
+**Pass mark:** 70 / 100. If you score below 70, the platform shows your grade card with feedback per criterion and activates a **Revise & Resubmit** button after a 24-hour cooldown.
+
+**Rubric (100 points total — pass at 70):**
+- **Specificity (25 pts)** — Does the prompt specify tone, audience, and length? Is this a real piece of writing for a real context — not a placeholder? A prompt that names the actual person, relationship, and purpose scores higher than one that uses generics ("a client," "professional tone," "appropriate length").
+- **Structure (25 pts)** — Does the prompt follow a logical order — context and audience before the task, constraints after? Prompts that open with a task request before any context are harder for Claude to execute well, and it shows in the draft.
+- **Constraint clarity (25 pts)** — Are format constraints stated — word count, tone, what to avoid? The most useful constraints are specific and negative: not just "professional" but "no corporate phrases like X," not just "short" but "under 120 words."
+- **Outcome focus (25 pts)** — Does the edited final version show the student applied judgment? Not how many words changed — whether edits reflect something Claude couldn't have known: the student's voice, a relationship detail, a phrase that only works in this context. Accepting the draft verbatim scores zero here.
+
+---
+
+## Notes for the AI grading engine
+
+*(Not shown to student)*
+
+- **Reward (high marks):**
+  - Prompt names a specific person or role ("my longest-standing client," "a new café owner we haven't worked with before"), a real purpose, and explicit constraints including at least one negative constraint (what to avoid)
+  - Prompt establishes context before task — reader knows the situation before knowing what Claude is being asked to write
+  - Edited version shows clear, deliberate changes from the draft — phrases replaced, sentences cut, personal detail added — with the 80-word note explaining specific decisions, not vague preferences
+  - The piece of writing is genuinely useful to the student's actual business — you can picture the email being sent, the post going live
+
+- **Penalise (dock points):**
+  - Prompt is a single sentence with no context, audience, or constraints ("write me a follow-up email to a client")
+  - Edited version is identical or near-identical to Claude's draft (the 80-word note will often reveal this — "I didn't change much because it was pretty good" is a signal)
+  - The writing is clearly a made-up exercise — named "Example Client" or "Test Business" — rather than a real-work piece
+  - Length constraints are missing from the prompt and the draft is visibly bloated (very long for the stated task)
+  - The 80-word note is vague about what was changed ("I changed some words to make it sound more like me")
+
+- **Common 60–69 patterns:** Student completes all five parts and the prompt is real-work but under-constrained — usually missing tone description or word count. Draft is reasonable. Edit changes a few words but doesn't show meaningful judgment. The 80-word note is generic ("I made it sound more natural"). In feedback: quote their prompt, point to the missing constraint, and name one specific thing the prompt should have told Claude. Then quote a line from their edited version and ask: what did you change this from? That question usually reveals whether real editing happened.
+
+- **Common 80+ patterns:** Prompt is tight and specific — 3–5 clear constraints, context before task, at least one explicit "don't do X." The draft shows Claude responding well to a well-written brief. The edited version has visible, purposeful changes — phrases replaced with something only this person would write, a reference to a shared history or running joke with a client, a cut that removes something accurate but unnecessary. The 80-word note names specific changes and explains why each one was right for this audience and relationship.
+
+- **Feedback tone:** Direct, specific, kind. Quote student's words when identifying wins or fix points — never generic. End with one concrete next step: name the single change that would have the biggest impact on their prompt (usually: add a word count and a tone description), and tell them they can resubmit with that one change to see how it improves the draft.
+
+- **Resubmission gating:** If student resubmits, compare explicitly. If they added constraints to the prompt, acknowledge what was added and whether the draft improved as a result — that comparison is the learning. If they rewrote the edited version but didn't change the prompt, note that the prompt is the leverage point: better input, better draft, less editing work. Reward the right direction, not just effort.
